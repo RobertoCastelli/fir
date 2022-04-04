@@ -1,7 +1,44 @@
 body {
   margin: 0;
+  letter-spacing: 0.09rem;
+  color:  var(--black);
+  background-color: var(--white);
   font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  --black: #333;
+  --white: #f4f4f4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 768px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 1rem;
+}
+.content {
+  flex-grow: 1;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+}
+  
