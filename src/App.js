@@ -1,18 +1,24 @@
+// ROUTER
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 // COMPONENTS
-import { Carico } from "./components/Carico";
-import { Scarico } from "./components/Scarico";
 import { Content } from "./components/Content";
 import { Footer } from "./components/Footer";
 import { Title } from "./components/Title";
+import { Carico } from "./components/Carico";
+import { Scarico } from "./components/Scarico";
 
 function App() {
   return (
     <div className="container">
       <div className="content">
         <Title />
-        <Content />
-        <Carico />
-        <Scarico />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Content />} />
+            <Route path="/carico" element={<Carico />} />
+            <Route path="/scarico" element={<Scarico />} />
+          </Routes>
+        </BrowserRouter>
       </div>
       <Footer />
     </div>
