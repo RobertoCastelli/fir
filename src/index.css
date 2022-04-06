@@ -28,17 +28,14 @@ body {
   max-width: 780px;
   min-height: 100vh;
   margin: auto;
-  padding: 1rem;
 }
 .content {
   flex-grow: 1;
 }
-
 h1 {
   color: var(--red);
   font-weight: bold;
 }
-
 button {
   cursor: pointer;
   background-color: var(--white);
@@ -46,21 +43,29 @@ button {
   width: 100px;
 }
 
-footer {
-  text-align: center;
-  margin: 1rem;
-}
-
 /*********/
 /* TITLE */
 /*********/
 .wrapper-title {
-  display: grid;
+ text-align: center;
 }
-.content-title{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+/**********/
+/* FOOTER */
+/**********/
+.wrapper-footer {
+  text-align: center;
+  margin: 1rem;
+}
+.logo-euroamb-footer {
+  width: 200px;
+  margin-right: 1rem;
+}
+.logo-itaf-footer {
+  width: 70px;
+}
+.copyright-footer {
+  margin: 1rem;
 }
 
 /*********/
