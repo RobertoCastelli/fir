@@ -23,6 +23,7 @@ export const Content = () => {
               <button className="scarico-content">
                 <Link to="/scarico">S</Link>
               </button>
+              <button className="info-content">I</button>
             </li>
           );
         })}
