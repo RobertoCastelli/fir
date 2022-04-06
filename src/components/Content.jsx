@@ -28,16 +28,16 @@ export const Content = () => {
               </div>
               <Link to="/carico">
                 <button className="carico-content">
-                  <FiUpload size={30} />
+                  <FiUpload size={20} />
                 </button>
               </Link>
               <Link to="/scarico">
                 <button className="scarico-content">
-                  <FiDownload size={30} />
+                  <FiDownload size={20} />
                 </button>
               </Link>
               <button className="info-content">
-                <FiInfo size={30} />
+                <FiInfo size={20} />
               </button>
             </li>
           );

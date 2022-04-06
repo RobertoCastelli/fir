@@ -38,9 +38,18 @@ h1 {
 }
 button {
   cursor: pointer;
-  background-color: var(--white);
   height: 50px;
-  width: 100px;
+  width: 90px;
+  background-color: var(--white);
+  outline: none;
+  border: none;
+  border-radius: 0.3rem;
+  box-shadow: 3px 3px 5px -2px var(--black);
+  transition: all 0.05s ease-in;
+}
+button:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 2px -1px var(--black);
 }
 
 /*********/
@@ -76,18 +85,20 @@ button {
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
 }
-.li-content{
+.li-content,
+.wrapper-carico,
+.wrapper-scarico{
+  box-shadow: 5px 5px 15px -5px var(--black);
   justify-items: center;
   align-items: center;
-  border: 1px solid var(--black);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   background-color: white;
   width: 350px;
   height: 250px;
-  margin: 1.5rem 1.5rem 0 0;
-  padding: 1rem;
+  margin: 1rem;
+  padding: 0.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -102,6 +113,7 @@ button {
   }
 .cer-content {
   grid-area: cer;
+  text-align: center;
 }
 .mc-content {
   grid-area: mc;
@@ -118,6 +130,7 @@ button {
 }
 .scarico-content {
   grid-area: scarico;
+  margin: 0 0.5rem;
 }
 .info-content {
   grid-area: info;

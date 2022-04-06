@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Carico = () => {
   return (
-    <div>
+    <div className="wrapper-carico">
       <div>CARICO</div>
       <div>CER 123456</div>
       <div>Rif. n</div>

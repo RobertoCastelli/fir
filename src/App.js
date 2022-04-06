@@ -6,22 +6,25 @@ import { Footer } from "./components/Footer";
 import { Title } from "./components/Title";
 import { Carico } from "./components/Carico";
 import { Scarico } from "./components/Scarico";
+import { ContextProvider } from "./context";
 
 function App() {
   return (
-    <div className="container">
-      <div className="content">
-        <Title />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Content />} />
-            <Route path="/carico" element={<Carico />} />
-            <Route path="/scarico" element={<Scarico />} />
-          </Routes>
-        </BrowserRouter>
+    <ContextProvider>
+      <div className="container">
+        <div className="content">
+          <Title />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Content />} />
+              <Route path="/carico" element={<Carico />} />
+              <Route path="/scarico" element={<Scarico />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </ContextProvider>
   );
 }
 
