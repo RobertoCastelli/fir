@@ -75,6 +75,7 @@ footer {
   align-items: center;
   border: 1px solid var(--black);
   border-radius: 1rem;
+  background-color: white;
   width: 350px;
   height: 250px;
   margin: 1.5rem 1.5rem 0 0;
@@ -99,6 +100,7 @@ footer {
 }
 .descrizione-content {
   grid-area: descrizione;
+  text-transform: uppercase;
 }
 .carico-content {
   grid-area: carico;
