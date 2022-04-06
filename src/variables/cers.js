@@ -3,7 +3,7 @@ export let cers = [
   { cer: 170405, descrizione: "ferro e acciaio", mc: 0 },
   {
     cer: 170904,
-    descrizione: "rifiuti da attività di demolizione",
+    descrizione: "rifiuti da demolizioni",
     mc: 0,
   },
   {
