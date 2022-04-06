@@ -4,6 +4,7 @@ import { cers } from "../variables/cers";
 // ICONS
 import { FaRecycle } from "react-icons/fa";
 import { FiDownload, FiUpload, FiInfo } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs";
 
 export const Content = () => {
   return (
@@ -11,13 +12,19 @@ export const Content = () => {
       <ul className="ul-content">
         {cers.map((cer) => {
           return (
-            <li key={cer.cer} className="li-content">
-              <div className="img-content" style={{ color: cer.colore }}>
+            <li
+              key={cer.cer}
+              className="li-content"
+              style={{ color: cer.colore }}
+            >
+              <div className="img-content">
                 <FaRecycle size={50} />
               </div>
               <div className="cer-content">CER {cer.cer}</div>
               <div className="descrizione-content">{cer.descrizione}</div>
-              <div className="mc-content">mc {cer.mc}/ 36</div>
+              <div className="mc-content">
+                {cer.mc}/ 36 <BsMinecartLoaded />
+              </div>
               <Link to="/carico">
                 <button className="carico-content">
                   <FiUpload size={30} />

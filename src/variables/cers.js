@@ -1,5 +1,5 @@
 export let cers = [
-  { cer: 150106, descrizione: "rifiuti misti", mc: 0, colore: "cadetblue" },
+  { cer: 150106, descrizione: "rifiuti misti", mc: 0, colore: "green" },
   { cer: 170405, descrizione: "ferro e acciaio", mc: 0, colore: "grey" },
   {
     cer: 170904,
@@ -11,7 +11,7 @@ export let cers = [
     cer: 170802,
     descrizione: "materiale a base di gesso ",
     mc: 0,
-    colore: "orange",
+    colore: "cadetblue",
   },
-  { cer: 200121, descrizione: "tubi fluorescenti", mc: 0, colore: "yellow" },
+  { cer: 200121, descrizione: "tubi fluorescenti", mc: 0, colore: "orange" },
 ];
