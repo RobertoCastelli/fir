@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 // ROUTER
 import { Link } from "react-router-dom";
-import { cers } from "../variables/cers";
 // ICONS
 import { FaRecycle } from "react-icons/fa";
 import { FiDownload, FiUpload, FiInfo } from "react-icons/fi";
@@ -10,7 +9,7 @@ import { BsMinecartLoaded } from "react-icons/bs";
 import { ContextData } from "../context";
 
 export const Content = () => {
-  const { getCer } = useContext(ContextData);
+  const { cers, getCer } = useContext(ContextData);
 
   return (
     <div className="wrapper-content">
