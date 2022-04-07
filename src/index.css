@@ -39,7 +39,7 @@ h1 {
 button {
   cursor: pointer;
   height: 50px;
-  width: 90px;
+  width: 80px;
   background-color: var(--white);
   outline: none;
   border: none;
@@ -51,7 +51,11 @@ button:active {
   transform: translateY(1px);
   box-shadow: 1px 1px 2px -1px var(--black);
 }
-
+input {
+  border: none;
+  border-bottom: 1px solid var(--black);
+  width: 120px;
+}
 /*********/
 /* TITLE */
 /*********/
@@ -77,9 +81,24 @@ button:active {
   margin: 1rem;
 }
 
-/*********/
-/* TILES */
-/*********/
+/************************/
+/* TILES STYLE TEMPLATE */  
+/************************/
+.li-content, 
+.wrapper-carico {
+  box-shadow: 5px 5px 15px -5px var(--black);
+  justify-items: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  background-color: white;
+  width: 350px;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+/*******************/
+/* TILES HOME PAGE */
+/*******************/
 .ul-content{
   list-style: none;
   padding: 0;
@@ -87,24 +106,14 @@ button:active {
   display: flex;
   flex-wrap: wrap; 
 }
-.li-content,
-.wrapper-carico,
-.wrapper-scarico{
-  box-shadow: 5px 5px 15px -5px var(--black);
-  justify-items: center;
-  align-items: center;
-  border-radius: 0.5rem;
-  background-color: white;
-  width: 350px;
-  height: 250px;
-  margin: 1rem;
-  padding: 0.5rem;
+.li-content
+{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas: 
-  "image descrizione descrizione"
-  "cer mc mc"
+  "image mc mc"
+  "cer descrizione descrizione"
   "carico scarico info";
 } 
 .img-content {
@@ -135,3 +144,54 @@ button:active {
 .info-content {
   grid-area: info;
 }
+
+/**********/
+/* CARICO */
+/**********/
+.wrapper-carico {
+  margin: 1rem auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-areas: 
+  "title title"
+  "cer descrizione"
+  "rif mc"
+  "input carico"
+  "home info";
+}
+.title-carico{
+  grid-area: title;
+  font-size: large;
+  font-weight: bold;
+}
+.cer-carico{
+  grid-area: cer;
+}
+.rif-carico {
+  grid-area: rif;
+}
+.mc-carcio {
+  grid-area: mc;
+}
+.descrizione-carico{
+  grid-area: descrizione;
+  text-transform: uppercase;
+}
+.home-carico {
+  grid-area: home;
+  margin: 1rem;
+}
+.info-carico {
+  grid-area: info;
+  margin: 1rem;
+}
+.input-carico{
+  grid-area: input;
+  padding: 0.5rem;
+  text-indent: 10px;
+}
+.carico-carico {
+  grid-area: carico;
+}
+

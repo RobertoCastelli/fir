@@ -24,16 +24,16 @@ export const Content = () => {
               <div className="cer-content">CER {cer.cer}</div>
               <div className="descrizione-content">{cer.descrizione}</div>
               <div className="mc-content">
-                {cer.mc}/ 36 <BsMinecartLoaded />
+                {cer.mc} / 36 <BsMinecartLoaded />
               </div>
               <Link to="/carico">
                 <button className="carico-content">
-                  <FiUpload size={20} />
+                  <FiDownload size={20} />
                 </button>
               </Link>
               <Link to="/scarico">
                 <button className="scarico-content">
-                  <FiDownload size={20} />
+                  <FiUpload size={20} />
                 </button>
               </Link>
               <button className="info-content">
