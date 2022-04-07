@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 // ROUTER
 import { Link } from "react-router-dom";
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs";
 import { AiOutlineHome } from "react-icons/ai";
 import { FiDownload, FiInfo } from "react-icons/fi";
+// CONTEXT
+import { ContextData } from "../context";
 
 export const Carico = () => {
+  const { caricoMateriale, selectedCer } = useContext(ContextData);
+
   return (
-    <div className="wrapper-carico">
+    <div className="wrapper-carico" style={{ color: selectedCer[0].colore }}>
       <div className="title-carico">CARICO</div>
-      <div className="cer-carico">CER 123456</div>
-      <div className="descrizione-carico">descrizione</div>
+      <div className="cer-carico">CER {selectedCer[0].cer}</div>
+      <div className="descrizione-carico">{selectedCer[0].descrizione}</div>
       <div className="rif-carico">Rif. 00/2022</div>
       <div className="mc-carico">
-        20 / 36 <BsMinecartLoaded />
+        {selectedCer[0].mc} / 36 <BsMinecartLoaded />
       </div>
       <input
         className="input-carico"
@@ -22,7 +26,7 @@ export const Carico = () => {
         name="mc"
         placeholder="inserisci mc"
       />
-      <button className="carico-carico">
+      <button className="carico-carico" onClick={() => caricoMateriale()}>
         <FiDownload size={20} />
       </button>
       <button className="info-carico">

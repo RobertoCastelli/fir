@@ -85,7 +85,8 @@ input {
 /* TILES STYLE TEMPLATE */  
 /************************/
 .li-content, 
-.wrapper-carico {
+.wrapper-carico,
+.wrapper-scarico {
   box-shadow: 5px 5px 15px -5px var(--black);
   justify-items: center;
   align-items: center;
@@ -194,4 +195,6 @@ input {
 .carico-carico {
   grid-area: carico;
 }
+
+
 

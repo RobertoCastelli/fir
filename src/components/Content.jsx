@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 // ROUTER
 import { Link } from "react-router-dom";
 import { cers } from "../variables/cers";
@@ -6,8 +6,12 @@ import { cers } from "../variables/cers";
 import { FaRecycle } from "react-icons/fa";
 import { FiDownload, FiUpload, FiInfo } from "react-icons/fi";
 import { BsMinecartLoaded } from "react-icons/bs";
+// CONTEXT
+import { ContextData } from "../context";
 
 export const Content = () => {
+  const { getCer } = useContext(ContextData);
+
   return (
     <div className="wrapper-content">
       <ul className="ul-content">
@@ -27,7 +31,10 @@ export const Content = () => {
                 {cer.mc} / 36 <BsMinecartLoaded />
               </div>
               <Link to="/carico">
-                <button className="carico-content">
+                <button
+                  onClick={() => getCer(cer.cer)}
+                  className="carico-content"
+                >
                   <FiDownload size={20} />
                 </button>
               </Link>
