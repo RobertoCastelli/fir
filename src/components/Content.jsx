@@ -9,12 +9,12 @@ import { BsMinecartLoaded } from "react-icons/bs";
 import { ContextData } from "../context";
 
 export const Content = () => {
-  const { cers, getCer } = useContext(ContextData);
+  const { cersDb, getCer } = useContext(ContextData);
 
   return (
     <div className="wrapper-content">
       <ul className="ul-content">
-        {cers.map((cer) => {
+        {cersDb.map((cer) => {
           return (
             <li
               key={cer.cer}
