@@ -20,4 +20,4 @@ export let cers = [
     mc: 0,
     colore: "green",
   },
-];
+]

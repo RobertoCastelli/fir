@@ -40,6 +40,7 @@ button {
   cursor: pointer;
   height: 50px;
   width: 80px;
+  margin-top: 1rem;
   background-color: var(--white);
   outline: none;
   border: none;
@@ -110,12 +111,12 @@ input {
 .li-content
 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas: 
-  "image mc mc"
-  "cer descrizione descrizione"
-  "carico scarico info";
+  "image mc"
+  "cer descrizione"
+  "carico scarico";
 } 
 .img-content {
   grid-area: image;
@@ -140,11 +141,8 @@ input {
 }
 .scarico-content {
   grid-area: scarico;
-  margin: 0 0.5rem;
 }
-.info-content {
-  grid-area: info;
-}
+
 
 /**********/
 /* CARICO */

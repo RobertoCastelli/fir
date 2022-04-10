@@ -1,18 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // ROUTER
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 // ICONS
-import { FaRecycle } from "react-icons/fa";
-import { FiDownload, FiUpload, FiInfo } from "react-icons/fi";
-import { BsMinecartLoaded } from "react-icons/bs";
+import { FaRecycle } from "react-icons/fa"
+import { FiDownload, FiUpload, FiInfo } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Content = () => {
-  const { cersDb, getCer } = useContext(ContextData);
+  const { cersDb, getCer } = useContext(ContextData)
 
   return (
     <div className="wrapper-content">
+      <Link to="/log">
+        <button className="info-content">
+          <FiInfo size={20} />
+        </button>
+      </Link>
       <ul className="ul-content">
         {cersDb.map((cer) => {
           return (
@@ -42,13 +47,10 @@ export const Content = () => {
                   <FiUpload size={20} />
                 </button>
               </Link>
-              <button className="info-content">
-                <FiInfo size={20} />
-              </button>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
-};
+  )
+}

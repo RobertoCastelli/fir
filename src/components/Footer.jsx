@@ -1,6 +1,7 @@
-import React from "react";
-import logo_itaf from "../images/logo-itaf.png";
-import logo_euroamb from "../images/logo-euroamb.png";
+import React from "react"
+// IMAGES
+import logo_itaf from "../images/logo-itaf.png"
+import logo_euroamb from "../images/logo-euroamb.png"
 
 export const Footer = () => {
   return (
@@ -14,5 +15,5 @@ export const Footer = () => {
       <div className="copyright-footer"></div>
       copyright &copy; 2022 - Roberto Castelli
     </div>
-  );
-};
+  )
+}
