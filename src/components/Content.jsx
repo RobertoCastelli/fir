@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { Link } from "react-router-dom"
 // ICONS
 import { FaRecycle } from "react-icons/fa"
-import { FiDownload, FiUpload, FiInfo } from "react-icons/fi"
+import { FiDownload, FiUpload } from "react-icons/fi"
 import { BsMinecartLoaded } from "react-icons/bs"
 // CONTEXT
 import { ContextData } from "../context"
@@ -13,11 +13,6 @@ export const Content = () => {
 
   return (
     <div className="wrapper-content">
-      <Link to="/log">
-        <button className="info-content">
-          <FiInfo size={20} />
-        </button>
-      </Link>
       <ul className="ul-content">
         {cersDb.map((cer) => {
           return (

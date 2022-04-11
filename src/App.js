@@ -8,6 +8,7 @@ import { Title } from "./components/Title"
 import { Carico } from "./components/Carico"
 import { Scarico } from "./components/Scarico"
 import { Log } from "./components/Log"
+import { Error } from "./components/Error"
 
 import { ContextProvider } from "./context"
 
@@ -16,9 +17,10 @@ function App() {
     <ContextProvider>
       <div className="container">
         <div className="content">
-          <Title />
           <BrowserRouter>
+            <Title />
             <Routes>
+              <Route path="*" element={<Error />} />
               <Route path="/" element={<Content />} />
               <Route path="/carico" element={<Carico />} />
               <Route path="/scarico" element={<Scarico />} />

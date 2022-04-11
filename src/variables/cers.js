@@ -16,7 +16,7 @@ export let cers = [
   { cer: 200121, descrizione: "tubi fluorescenti", mc: 0, colore: "orange" },
   {
     cer: 200201,
-    descrizione: "rifiuti biodegradabili",
+    descrizione: "rifiuti biodegradab.",
     mc: 0,
     colore: "green",
   },

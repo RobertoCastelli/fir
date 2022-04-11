@@ -3,13 +3,20 @@ import React, { useContext } from "react"
 import { ContextData } from "../context"
 
 export const Log = () => {
-  const { log } = useContext(ContextData)
+  const { logs } = useContext(ContextData)
 
   return (
-    <div>
-      <ol>
-        {log.map((l, i) => {
-          return <li key={i}>{l}</li>
+    <div className="wrapper-log">
+      <ol className="ol-log">
+        {logs.map((log, i) => {
+          return (
+            <li key={i}>
+              <div>
+                {log.today} - CER {log.cer} {log.descrizione}
+              </div>
+              <div>CARICO ➟ {log.carico} mc</div>
+            </li>
+          )
         })}
       </ol>
     </div>

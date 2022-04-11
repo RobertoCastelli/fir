@@ -1,16 +1,19 @@
-import React, { useContext } from "react";
-// ROUTER
-import { Link } from "react-router-dom";
+import React, { useContext } from "react"
+
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs";
-import { AiOutlineHome } from "react-icons/ai";
-import { FiDownload, FiInfo } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs"
+import { FiDownload } from "react-icons/fi"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Carico = () => {
-  const { caricoMateriale, selectedCer, setMcCarico, rifProgressivo } =
-    useContext(ContextData);
+  const {
+    caricoMateriale,
+    selectedCer,
+    mcCarico,
+    setMcCarico,
+    rifProgressivo,
+  } = useContext(ContextData)
 
   return (
     <div className="wrapper-carico" style={{ color: selectedCer[0].colore }}>
@@ -21,27 +24,23 @@ export const Carico = () => {
       <div className="mc-carico">
         {selectedCer[0].mc} / 36 <BsMinecartLoaded />
       </div>
-      <input
-        onChange={(e) => setMcCarico(e.target.value)}
-        className="input-carico"
-        type="number"
-        name="mc"
-        placeholder="inserisci mc"
-      />
+      <div className="wrapper-input-carico">
+        <input
+          className="input-carico"
+          name="mc"
+          type="number"
+          value={mcCarico}
+          onChange={(e) => setMcCarico(e.target.value)}
+          onFocus={(e) => (e.target.value = "")}
+        />
+        <label htmlFor="mc"> mc</label>
+      </div>
       <button
         className="carico-carico"
         onClick={() => caricoMateriale(selectedCer[0].cer)}
       >
         <FiDownload size={20} />
       </button>
-      <button className="info-carico">
-        <FiInfo size={20} />
-      </button>
-      <Link to="/">
-        <button className="home-carico">
-          <AiOutlineHome size={20} />
-        </button>
-      </Link>
     </div>
-  );
-};
+  )
+}

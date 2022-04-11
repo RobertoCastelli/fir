@@ -52,16 +52,20 @@ button:active {
   transform: translateY(1px);
   box-shadow: 1px 1px 2px -1px var(--black);
 }
-input {
-  border: none;
-  border-bottom: 1px solid var(--black);
-  width: 120px;
-}
+
 /*********/
 /* TITLE */
 /*********/
 .wrapper-title {
- text-align: center;
+  text-align: center;
+}
+.home-title {
+  grid-area: home;
+  margin: 1rem;
+}
+.info-title {
+  grid-area: info;
+  margin: 1rem;
 }
 
 /**********/
@@ -93,14 +97,14 @@ input {
   align-items: center;
   border-radius: 0.5rem;
   background-color: white;
-  width: 350px;
+  width: 300px;
   margin: 1rem;
   padding: 1rem;
 }
 
-/*******************/
-/* TILES HOME PAGE */
-/*******************/
+/***************************/
+/* TILES HOME PAGE CONTENT */
+/***************************/
 .ul-content{
   list-style: none;
   padding: 0;
@@ -151,13 +155,12 @@ input {
   margin: 1rem auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   grid-template-areas: 
   "title title"
   "cer descrizione"
   "rif mc"
-  "input carico"
-  "home info";
+  "input carico";
 }
 .title-carico{
   grid-area: title;
@@ -173,25 +176,35 @@ input {
 .mc-carcio {
   grid-area: mc;
 }
-.descrizione-carico{
+.descrizione-carico {
   grid-area: descrizione;
   text-transform: uppercase;
 }
-.home-carico {
-  grid-area: home;
-  margin: 1rem;
-}
-.info-carico {
-  grid-area: info;
-  margin: 1rem;
+.wrapper-input-carico {
+  grid-area: input;
 }
 .input-carico{
-  grid-area: input;
+  width: 80px;
   padding: 0.5rem;
-  text-indent: 10px;
+  font-size:1rem; 
 }
 .carico-carico {
   grid-area: carico;
+  align-items: center;
+}
+
+/*******/
+/* LOG */
+/*******/
+.wrapper-log {
+  font-style: italic;
+}
+
+/*********/
+/* ERROR */
+/******^^*/
+.wrapper-error {
+text-align: center;
 }
 
 
