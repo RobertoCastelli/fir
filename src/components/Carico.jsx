@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { Content } from "./Content"
 
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs"
@@ -48,7 +49,7 @@ export const Carico = () => {
           </button>
         </div>
       ) : (
-        <h1 className="error-carico">Seleziona un CER dalla HOME</h1>
+        <Content />
       )}
     </>
   )

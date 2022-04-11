@@ -11,16 +11,20 @@ export const ContextProvider = (props) => {
   const [rifProgressivo, setRifProgressivo] = useState(1)
   const [mcCarico, setMcCarico] = useState(0)
   const [logs, setLogs] = useState([])
+  const [flag, setFlag] = useState("carico")
 
   // GET DATE
   const today = new Date().toLocaleDateString()
 
-  // GET SELECTED CER + SET RIFERIMENTO PROGRESSIVO
+  // GET SELECTED CER
   const getCer = (cer) => {
     setSelectedCer(cersDb.filter((c) => c.cer === cer))
   }
 
-  // AGGIORNA MC NEL CER
+  // SET FLAG CARICO - SCARICO
+  const flagCaricoScarico = () => {}
+
+  // AGGIORNA MC NEL CER + SET RIFERIMENTO PROGRESSIVO
   const updateMcSelectedCer = (cer) => {
     setCersDb(
       cersDb.map((c) => {
@@ -44,7 +48,6 @@ export const ContextProvider = (props) => {
         today,
         cer,
         carico: mcCarico,
-        descrizione: cer.descrizione,
       },
     ])
   }
@@ -58,7 +61,7 @@ export const ContextProvider = (props) => {
         setMcCarico(0)
       }
     } else {
-      alert("inserisci un numero valido")
+      alert("inserisci un numero di mc valido")
     }
   }
 

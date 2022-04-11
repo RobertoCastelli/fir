@@ -40,7 +40,6 @@ button {
   cursor: pointer;
   height: 50px;
   width: 80px;
-  margin-top: 1rem;
   background-color: var(--white);
   outline: none;
   border: none;
@@ -149,10 +148,11 @@ button:active {
 }
 
 
-/**********/
-/* CARICO */
-/**********/
-.wrapper-carico {
+/*******************/
+/* CARICO  SCARICO */
+/*******************/
+.wrapper-carico,
+.wrapper-scarico {
   margin: 1rem auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -163,39 +163,44 @@ button:active {
   "rif mc"
   "input carico";
 }
-.title-carico{
+.title-carico,
+.title-scarico{
   grid-area: title;
   font-size: large;
   font-weight: bold;
 }
-.cer-carico{
+.cer-carico,
+.cer-scarico {
   grid-area: cer;
 }
-.rif-carico {
+.rif-carico,
+.cer-scarico {
   grid-area: rif;
 }
-.mc-carcio {
+.mc-carico,
+.mc-scarico {
   grid-area: mc;
 }
-.descrizione-carico {
+.descrizione-carico,
+.descrizione-scarico {
   grid-area: descrizione;
   text-transform: uppercase;
 }
-.wrapper-input-carico {
+.wrapper-input-carico,
+.wrapper-input-scarico {
   grid-area: input;
 }
-.input-carico{
-
+.input-carico,
+.input-scarico{
   border: 2px dotted var(--black);
   border-radius: 0.5rem;
   width: 60px;
   padding: 0.5rem;
   font-family: 'Ubuntu', sans-serif;
   font-size: 1rem; 
-
-
 }
-.carico-carico {
+.carico-carico,
+.carico-scarico {
   grid-area: carico;
   align-items: center;
 }
