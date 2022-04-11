@@ -111,6 +111,7 @@ button:active {
   margin: 0;
   display: flex;
   flex-wrap: wrap; 
+  justify-content: center;
 }
 .li-content
 {
@@ -184,9 +185,15 @@ button:active {
   grid-area: input;
 }
 .input-carico{
-  width: 80px;
+
+  border: 2px dotted var(--black);
+  border-radius: 0.5rem;
+  width: 60px;
   padding: 0.5rem;
-  font-size:1rem; 
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1rem; 
+
+
 }
 .carico-carico {
   grid-area: carico;
@@ -203,8 +210,9 @@ button:active {
 /*********/
 /* ERROR */
 /******^^*/
-.wrapper-error {
-text-align: center;
+.wrapper-error,
+.error-carico {
+  text-align: center;
 }
 
 

@@ -16,31 +16,40 @@ export const Carico = () => {
   } = useContext(ContextData)
 
   return (
-    <div className="wrapper-carico" style={{ color: selectedCer[0].colore }}>
-      <div className="title-carico">CARICO</div>
-      <div className="cer-carico">CER {selectedCer[0].cer}</div>
-      <div className="descrizione-carico">{selectedCer[0].descrizione}</div>
-      <div className="rif-carico">Rif. {rifProgressivo}/2022</div>
-      <div className="mc-carico">
-        {selectedCer[0].mc} / 36 <BsMinecartLoaded />
-      </div>
-      <div className="wrapper-input-carico">
-        <input
-          className="input-carico"
-          name="mc"
-          type="number"
-          value={mcCarico}
-          onChange={(e) => setMcCarico(e.target.value)}
-          onFocus={(e) => (e.target.value = "")}
-        />
-        <label htmlFor="mc"> mc</label>
-      </div>
-      <button
-        className="carico-carico"
-        onClick={() => caricoMateriale(selectedCer[0].cer)}
-      >
-        <FiDownload size={20} />
-      </button>
-    </div>
+    <>
+      {selectedCer[0] ? (
+        <div
+          className="wrapper-carico"
+          style={{ color: selectedCer[0].colore }}
+        >
+          <div className="title-carico">CARICO</div>
+          <div className="cer-carico">CER {selectedCer[0].cer}</div>
+          <div className="descrizione-carico">{selectedCer[0].descrizione}</div>
+          <div className="rif-carico">Rif. {rifProgressivo}/2022</div>
+          <div className="mc-carico">
+            {selectedCer[0].mc} / 36 <BsMinecartLoaded />
+          </div>
+          <div className="wrapper-input-carico">
+            <input
+              className="input-carico"
+              name="mc"
+              type="number"
+              value={mcCarico}
+              onChange={(e) => setMcCarico(e.target.value)}
+              onFocus={(e) => (e.target.value = "")}
+            />
+            <label htmlFor="mc"> mc</label>
+          </div>
+          <button
+            className="carico-carico"
+            onClick={() => caricoMateriale(selectedCer[0].cer)}
+          >
+            <FiDownload size={20} />
+          </button>
+        </div>
+      ) : (
+        <h1 className="error-carico">Seleziona un CER dalla HOME</h1>
+      )}
+    </>
   )
 }
