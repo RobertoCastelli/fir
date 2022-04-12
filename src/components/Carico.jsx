@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
-import { Content } from "./Content"
+import React, { useContext } from "react";
+import { Content } from "./Content";
 
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs"
-import { FiDownload } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs";
+import { FiDownload } from "react-icons/fi";
 // CONTEXT
-import { ContextData } from "../context"
+import { ContextData } from "../context";
 
 export const Carico = () => {
   const {
@@ -14,7 +14,7 @@ export const Carico = () => {
     mcCarico,
     setMcCarico,
     rifProgressivo,
-  } = useContext(ContextData)
+  } = useContext(ContextData);
 
   return (
     <>
@@ -52,5 +52,5 @@ export const Carico = () => {
         <Content />
       )}
     </>
-  )
-}
+  );
+};

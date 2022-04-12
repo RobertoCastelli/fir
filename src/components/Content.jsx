@@ -1,15 +1,15 @@
-import React, { useContext } from "react"
+import React, { useContext } from "react";
 // ROUTER
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 // ICONS
-import { FaRecycle } from "react-icons/fa"
-import { FiDownload, FiUpload } from "react-icons/fi"
-import { BsMinecartLoaded } from "react-icons/bs"
+import { FaRecycle } from "react-icons/fa";
+import { FiDownload, FiUpload } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs";
 // CONTEXT
-import { ContextData } from "../context"
+import { ContextData } from "../context";
 
 export const Content = () => {
-  const { cersDb, getCer } = useContext(ContextData)
+  const { cersDb, getCerCarico } = useContext(ContextData);
 
   return (
     <div className="wrapper-content">
@@ -31,7 +31,7 @@ export const Content = () => {
               </div>
               <Link to="/carico">
                 <button
-                  onClick={() => getCer(cer.cer)}
+                  onClick={() => getCerCarico(cer.cer)}
                   className="carico-content"
                 >
                   <FiDownload size={20} />
@@ -43,9 +43,9 @@ export const Content = () => {
                 </button>
               </Link>
             </li>
-          )
+          );
         })}
       </ul>
     </div>
-  )
-}
+  );
+};

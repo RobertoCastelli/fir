@@ -1,74 +1,72 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react";
 // DATABASE
-import { cers } from "./variables/cers"
+import { cers } from "./variables/cers";
 // CONTEXT
-export const ContextData = React.createContext()
+export const ContextData = React.createContext();
 
 export const ContextProvider = (props) => {
   // STATE
-  const [cersDb, setCersDb] = useState(cers)
-  const [selectedCer, setSelectedCer] = useState([])
-  const [rifProgressivo, setRifProgressivo] = useState(1)
-  const [mcCarico, setMcCarico] = useState(0)
-  const [logs, setLogs] = useState([])
-  const [flag, setFlag] = useState("carico")
+  const [cersDb, setCersDb] = useState(cers);
+  const [selectedCer, setSelectedCer] = useState([]);
+  const [rifProgressivo, setRifProgressivo] = useState(1);
+  const [mcCarico, setMcCarico] = useState(0);
+  const [logs, setLogs] = useState([]);
 
   // GET DATE
-  const today = new Date().toLocaleDateString()
+  const today = new Date().toLocaleDateString();
 
-  // GET SELECTED CER
-  const getCer = (cer) => {
-    setSelectedCer(cersDb.filter((c) => c.cer === cer))
-  }
-
-  // SET FLAG CARICO - SCARICO
-  const flagCaricoScarico = () => {}
+  // GET SELECTED CER CARICO
+  const getCerCarico = (cer) => {
+    setSelectedCer(cersDb.filter((c) => c.cer === cer));
+  };
 
   // AGGIORNA MC NEL CER + SET RIFERIMENTO PROGRESSIVO
   const updateMcSelectedCer = (cer) => {
     setCersDb(
       cersDb.map((c) => {
         if (c.cer === cer) {
-          let mcAggiornati = parseInt(mcCarico) + parseInt(c.mc)
-          setSelectedCer([{ ...selectedCer[0], mc: mcAggiornati }])
-          setRifProgressivo(logs.length + 2)
-          return { ...c, mc: mcAggiornati }
+          let mcAggiornati = parseInt(mcCarico) + parseInt(c.mc);
+          setSelectedCer([{ ...selectedCer[0], mc: mcAggiornati }]);
+          setRifProgressivo(logs.length + 2);
+          return { ...c, mc: mcAggiornati };
         } else {
-          return c
+          return c;
         }
       })
-    )
-  }
+    );
+  };
 
   // AGGIORNA LOG
-  const updateLog = (cer) => {
+  const updateLogCarico = (cer) => {
     setLogs([
       ...logs,
       {
         today,
         cer,
+        rifProgressivo,
         carico: mcCarico,
+        attivita: "C",
       },
-    ])
-  }
+    ]);
+  };
 
   // CARICO MC MATERIALE
   const caricoMateriale = (cer) => {
     if (mcCarico !== 0) {
       if (window.confirm(`conferma carico di mc ${mcCarico}`)) {
-        updateMcSelectedCer(cer)
-        updateLog(cer)
-        setMcCarico(0)
+        updateMcSelectedCer(cer);
+        updateLogCarico(cer);
+        setMcCarico(0);
       }
     } else {
-      alert("inserisci un numero di mc valido")
+      alert("inserisci un numero di mc valido");
     }
-  }
+  };
 
   return (
     <ContextData.Provider
       value={{
-        getCer,
+        getCerCarico,
         selectedCer,
         cersDb,
         caricoMateriale,
@@ -80,5 +78,5 @@ export const ContextProvider = (props) => {
     >
       {props.children}
     </ContextData.Provider>
-  )
-}
+  );
+};

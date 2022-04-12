@@ -1,31 +1,29 @@
-import React, { useContext } from "react"
+import React, { useContext } from "react";
 // CONTEXT
-import { ContextData } from "../context"
-import { Content } from "./Content"
+import { ContextData } from "../context";
+import { Content } from "./Content";
 
 export const Log = () => {
-  const { logs, selectedCer } = useContext(ContextData)
+  const { logs, selectedCer } = useContext(ContextData);
 
   return (
     <>
       {selectedCer[0] ? (
         <div className="wrapper-log">
-          <ol className="ol-log">
+          <ul className="ol-log">
             {logs.map((log, i) => {
               return (
-                <li key={i}>
-                  <div>
-                    {log.today} - CER {log.cer}
-                  </div>
-                  <div>CARICO ➟ {log.carico} mc</div>
+                <li key={i} className="li-log">
+                  rif.{log.rifProgressivo} [{log.attivita}] {log.today} - CER{" "}
+                  {log.cer} ➟ {log.carico} mc
                 </li>
-              )
+              );
             })}
-          </ol>
+          </ul>
         </div>
       ) : (
         <Content />
       )}
     </>
-  )
-}
+  );
+};

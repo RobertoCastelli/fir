@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
-import { Content } from "./Content"
+import React, { useContext } from "react";
+import { Content } from "./Content";
 
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs"
-import { FiUpload } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs";
+import { FiUpload } from "react-icons/fi";
 // CONTEXT
-import { ContextData } from "../context"
+import { ContextData } from "../context";
 
 export const Scarico = () => {
   const {
@@ -14,7 +14,7 @@ export const Scarico = () => {
     mcCarico,
     setMcCarico,
     rifProgressivo,
-  } = useContext(ContextData)
+  } = useContext(ContextData);
 
   return (
     <>
@@ -32,6 +32,7 @@ export const Scarico = () => {
           <div className="mc-scarico">
             {selectedCer[0].mc} / 36 <BsMinecartLoaded />
           </div>
+
           <div className="wrapper-input-scarico">
             <input
               className="input-scarico"
@@ -54,5 +55,5 @@ export const Scarico = () => {
         <Content />
       )}
     </>
-  )
-}
+  );
+};
