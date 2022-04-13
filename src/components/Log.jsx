@@ -15,7 +15,7 @@ export const Log = () => {
               return (
                 <li key={i} className="li-log">
                   rif.{log.rifProgressivo} [{log.attivita}] {log.today} - CER{" "}
-                  {log.cer} ➟ {log.carico} mc
+                  {log.cer} ➟ {log.mcCarico} mc
                 </li>
               );
             })}

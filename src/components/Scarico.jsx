@@ -6,15 +6,10 @@ import { BsMinecartLoaded } from "react-icons/bs";
 import { FiUpload } from "react-icons/fi";
 // CONTEXT
 import { ContextData } from "../context";
+import { LogFiltered } from "./LogFiltered";
 
 export const Scarico = () => {
-  const {
-    scaricoMateriale,
-    selectedCer,
-    mcCarico,
-    setMcCarico,
-    rifProgressivo,
-  } = useContext(ContextData);
+  const { selectedCer, rifProgressivo } = useContext(ContextData);
 
   return (
     <>
@@ -32,22 +27,10 @@ export const Scarico = () => {
           <div className="mc-scarico">
             {selectedCer[0].mc} / 36 <BsMinecartLoaded />
           </div>
-
-          <div className="wrapper-input-scarico">
-            <input
-              className="input-scarico"
-              name="mc"
-              type="number"
-              value={mcCarico}
-              onChange={(e) => setMcCarico(e.target.value)}
-              onFocus={(e) => (e.target.value = "")}
-            />
-            <label htmlFor="mc"> mc</label>
+          <div className="log-scarico">
+            <LogFiltered />
           </div>
-          <button
-            className="carico-scarico"
-            onClick={() => scaricoMateriale(selectedCer[0].cer)}
-          >
+          <button className="carico-scarico">
             <FiUpload size={20} />
           </button>
         </div>

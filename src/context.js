@@ -11,6 +11,7 @@ export const ContextProvider = (props) => {
   const [rifProgressivo, setRifProgressivo] = useState(1);
   const [mcCarico, setMcCarico] = useState(0);
   const [logs, setLogs] = useState([]);
+  const [filteredLogs, setFilteredLogs] = useState([]);
 
   // GET DATE
   const today = new Date().toLocaleDateString();
@@ -18,6 +19,12 @@ export const ContextProvider = (props) => {
   // GET SELECTED CER CARICO
   const getCerCarico = (cer) => {
     setSelectedCer(cersDb.filter((c) => c.cer === cer));
+  };
+
+  // GET SELECTED CER SCARICO
+  const getCerScarico = (cer) => {
+    setSelectedCer(cersDb.filter((c) => c.cer === cer));
+    logFiltered(cer);
   };
 
   // AGGIORNA MC NEL CER + SET RIFERIMENTO PROGRESSIVO
@@ -36,7 +43,7 @@ export const ContextProvider = (props) => {
     );
   };
 
-  // AGGIORNA LOG
+  // AGGIORNA LOG CARICO
   const updateLogCarico = (cer) => {
     setLogs([
       ...logs,
@@ -44,7 +51,7 @@ export const ContextProvider = (props) => {
         today,
         cer,
         rifProgressivo,
-        carico: mcCarico,
+        mcCarico,
         attivita: "C",
       },
     ]);
@@ -63,10 +70,15 @@ export const ContextProvider = (props) => {
     }
   };
 
+  // FILTRA LOG PER CER
+  const logFiltered = (cer) =>
+    setFilteredLogs(logs.filter((log) => log.cer === cer));
+
   return (
     <ContextData.Provider
       value={{
         getCerCarico,
+        getCerScarico,
         selectedCer,
         cersDb,
         caricoMateriale,
@@ -74,6 +86,8 @@ export const ContextProvider = (props) => {
         setMcCarico,
         rifProgressivo,
         logs,
+        logFiltered,
+        filteredLogs,
       }}
     >
       {props.children}

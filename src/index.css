@@ -156,7 +156,7 @@ button:active {
   margin: 1rem auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: 50px 50px 50px auto;
   grid-template-areas: 
   "title title"
   "cer descrizione"
@@ -187,11 +187,10 @@ button:active {
   text-transform: uppercase;
 }
 .wrapper-input-carico,
-.wrapper-input-scarico {
+.log-scarico {
   grid-area: input;
 }
-.input-carico,
-.input-scarico{
+.input-carico {
   border: 2px dotted var(--black);
   border-radius: 0.5rem;
   width: 60px;
@@ -211,12 +210,14 @@ button:active {
 .wrapper-log {
   font-style: italic;
 }
-.ul-log{
+.ul-log,
+.ul-filtered {
   padding: 0;
 }
-.li-log {
+.li-log,
+.li-filtered {
   list-style: none;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 /*********/
@@ -226,6 +227,7 @@ button:active {
 .error-carico {
   text-align: center;
 }
+
 
 
 
