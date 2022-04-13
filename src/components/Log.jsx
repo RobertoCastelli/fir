@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
+// COMPONENTS
+import { Content } from "./Content";
 // CONTEXT
 import { ContextData } from "../context";
-import { Content } from "./Content";
 
 export const Log = () => {
   const { logs, selectedCer } = useContext(ContextData);

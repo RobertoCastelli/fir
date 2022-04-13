@@ -1,16 +1,16 @@
-import React from "react"
+import React from "react";
 // ROUTER
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 // COMPONENTS
-import { Content } from "./components/Content"
-import { Footer } from "./components/Footer"
-import { Title } from "./components/Title"
-import { Carico } from "./components/Carico"
-import { Scarico } from "./components/Scarico"
-import { Log } from "./components/Log"
-import { Error } from "./components/Error"
-
-import { ContextProvider } from "./context"
+import { Content } from "./components/Content";
+import { Footer } from "./components/Footer";
+import { Title } from "./components/Title";
+import { Carico } from "./components/Carico";
+import { Scarico } from "./components/Scarico";
+import { Log } from "./components/Log";
+import { Error } from "./components/Error";
+// CONTEXT
+import { ContextProvider } from "./context";
 
 function App() {
   return (
@@ -31,10 +31,10 @@ function App() {
         <Footer />
       </div>
     </ContextProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 
 //********************
 /* TODO: 

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
+// COMPONENTS
 import { Content } from "./Content";
-
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs";
 import { FiDownload } from "react-icons/fi";

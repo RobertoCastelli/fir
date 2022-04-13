@@ -5,7 +5,7 @@ body {
   margin: 0;
   letter-spacing: 0.09rem;
   color:  var(--black);
-  background-color: var(--white);
+  background: var(--white);
   font-family: 'Ubuntu', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -14,6 +14,7 @@ body {
   --black: #333;
   --white: #f4f4f4;
   --red: #9c2823;
+  --green: #95DC98
 }
 * {
   box-sizing: border-box;
@@ -61,10 +62,18 @@ button:active {
 .home-title {
   grid-area: home;
   margin: 1rem;
+  background-color: var(--green);
+  color: var(--red);
 }
 .info-title {
   grid-area: info;
   margin: 1rem;
+  background-color: var(--green);
+  color: var(--red);
+}
+.img-title {
+  width: 300px;
+  margin-bottom: 1rem;
 }
 
 /**********/
@@ -147,7 +156,6 @@ button:active {
   grid-area: scarico;
 }
 
-
 /*******************/
 /* CARICO  SCARICO */
 /*******************/
@@ -155,7 +163,7 @@ button:active {
 .wrapper-scarico {
   margin: 1rem auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-template-rows: 50px 50px 50px auto;
   grid-template-areas: 
   "title title"
@@ -191,11 +199,11 @@ button:active {
   grid-area: input;
 }
 .input-carico {
+  font-family: 'Ubuntu', sans-serif;
   border: 2px dotted var(--black);
   border-radius: 0.5rem;
-  width: 60px;
   padding: 0.5rem;
-  font-family: 'Ubuntu', sans-serif;
+  width: 60px;
   font-size: 1rem; 
 }
 .carico-carico,
@@ -207,7 +215,8 @@ button:active {
 /*******/
 /* LOG */
 /*******/
-.wrapper-log {
+.wrapper-log,
+.wrapper-filtered {
   font-style: italic;
 }
 .ul-log,
@@ -217,7 +226,9 @@ button:active {
 .li-log,
 .li-filtered {
   list-style: none;
-  margin-top: 0.5rem;
+}
+.li-filtered {
+  font-size: 0.9rem;
 }
 
 /*********/
