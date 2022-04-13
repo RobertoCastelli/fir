@@ -59,6 +59,9 @@ button:active {
 .wrapper-title {
   text-align: center;
 }
+.second-title {
+  padding: 1rem;
+}
 .home-title {
   grid-area: home;
   margin: 1rem;
@@ -73,7 +76,6 @@ button:active {
 }
 .img-title {
   width: 300px;
-  margin-bottom: 1rem;
 }
 
 /**********/
