@@ -15,6 +15,7 @@ body {
   --white: #f4f4f4;
   --red: #9c2823;
   --green: #95DC98
+
 }
 * {
   box-sizing: border-box;
@@ -26,7 +27,7 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  max-width: 780px;
+  max-width: 1024px;
   min-height: 100vh;
   margin: auto;
 }
@@ -165,7 +166,7 @@ button:active {
 .wrapper-scarico {
   margin: 1rem auto;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 50px 50px 50px auto;
   grid-template-areas: 
   "title title"
@@ -195,18 +196,20 @@ button:active {
 .descrizione-scarico {
   grid-area: descrizione;
   text-transform: uppercase;
+  text-align: center;
 }
 .wrapper-input-carico,
 .log-scarico {
   grid-area: input;
+  justify-self: flex-start;
 }
 .input-carico {
   font-family: 'Ubuntu', sans-serif;
+  font-size: 1rem; 
   border: 2px dotted var(--black);
   border-radius: 0.5rem;
   padding: 0.5rem;
-  width: 60px;
-  font-size: 1rem; 
+  width: 80px;
 }
 .carico-carico,
 .carico-scarico {
@@ -225,6 +228,7 @@ button:active {
 .ul-filtered {
   padding: 0;
 }
+
 .li-log,
 .li-filtered {
   list-style: none;

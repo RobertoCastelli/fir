@@ -10,9 +10,9 @@ import bg from "../images/camion.png";
 export const Title = () => {
   return (
     <div className="wrapper-title">
-      <h1 className="title-title">F.I.R.</h1>
       <img className="img-title" src={bg} alt="bg-img" />
       <div className="second-title">
+        <h1 className="title-title">F.I.R.</h1>
         GESTIONE CARICO E SCARICO MATERIALE DI RISULTA
       </div>
       <Link to="/log">

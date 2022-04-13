@@ -13,7 +13,7 @@ export const Scarico = () => {
 
   return (
     <>
-      {selectedCer[0] ? (
+      {selectedCer[0].mc ? (
         <div
           className="wrapper-scarico"
           style={{ color: selectedCer[0].colore }}

@@ -5,11 +5,11 @@ import { Content } from "./Content";
 import { ContextData } from "../context";
 
 export const Log = () => {
-  const { logs, selectedCer } = useContext(ContextData);
+  const { logs } = useContext(ContextData);
 
   return (
     <>
-      {selectedCer[0] ? (
+      {logs.length !== 0 ? (
         <div className="wrapper-log">
           <ul className="ol-log">
             {logs.map((log, i) => {
