@@ -16,13 +16,8 @@ export const ContextProvider = (props) => {
   // GET DATE
   const today = new Date().toLocaleDateString();
 
-  // GET SELECTED CER CARICO
-  const getCerCarico = (cer) => {
-    setSelectedCer(cersDb.filter((c) => c.cer === cer));
-  };
-
-  // GET SELECTED CER SCARICO
-  const getCerScarico = (cer) => {
+  // GET SELECTED CER
+  const getCer = (cer) => {
     setSelectedCer(cersDb.filter((c) => c.cer === cer));
     logFiltered(cer);
   };
@@ -52,7 +47,7 @@ export const ContextProvider = (props) => {
         cer,
         rifProgressivo,
         mcCarico,
-        attivita: "C",
+        attivita: "Carico",
       },
     ]);
   };
@@ -77,8 +72,7 @@ export const ContextProvider = (props) => {
   return (
     <ContextData.Provider
       value={{
-        getCerCarico,
-        getCerScarico,
+        getCer,
         selectedCer,
         cersDb,
         caricoMateriale,

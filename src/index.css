@@ -3,6 +3,7 @@
 /********/
 body {
   margin: 0;
+  padding: 0;
   letter-spacing: 0.09rem;
   color:  var(--black);
   background: var(--white);
@@ -45,9 +46,9 @@ button {
   background-color: var(--white);
   outline: none;
   border: none;
-  border-radius: 0.3rem;
   box-shadow: 3px 3px 5px -2px var(--black);
   transition: all 0.05s ease-in;
+  border-radius: 0.5rem;
 }
 button:active {
   transform: translateY(1px);
@@ -226,16 +227,37 @@ button:active {
 }
 .ul-log,
 .ul-filtered {
-  padding: 0;
-}
-
-.li-log,
-.li-filtered {
-  list-style: none;
+  padding: 0.5rem;
+  margin: auto;
 }
 .li-filtered {
   font-size: 0.9rem;
+  list-style: none;
 }
+.li-log {
+  position: relative;
+  list-style: none;
+  margin-top: 2rem;
+  background-color: white;
+}
+.li-details {
+  padding: 1rem ;
+  border-radius: 0.5rem;
+  box-shadow: 5px 5px 15px -5px var(--black);
+}
+.li-rif {
+  position: absolute;
+  top: -20px;
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  font-weight: bold;
+  background-color: var(--green);
+  border-bottom-left-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
 
 /*********/
 /* ERROR */
