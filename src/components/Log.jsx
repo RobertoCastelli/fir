@@ -11,12 +11,14 @@ export const Log = () => {
     <>
       {logs.length !== 0 ? (
         <div className="wrapper-log">
-          <ul className="ol-log">
+          <ul className="ul-log">
             {logs.map((log, i) => {
               return (
                 <li key={i} className="li-log">
-                  rif.{log.rifProgressivo} [{log.attivita}] {log.today} - CER{" "}
-                  {log.cer} ➟ {log.mcCarico} mc
+                  <div className="li-rif">{log.rifProgressivo}</div>
+                  <div className="li-details">
+                    {log.attivita} {log.today} CER {log.cer} ➟ {log.mcCarico} mc
+                  </div>
                 </li>
               );
             })}

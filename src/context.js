@@ -85,7 +85,7 @@ export const ContextProvider = (props) => {
         cer,
         rifProgressivo,
         mcCarico,
-        attivita: "C",
+        attivita: "Carico",
       },
     ]);
   };
