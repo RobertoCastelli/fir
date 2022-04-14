@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // ROUTER
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 // ICONS
-import { FaRecycle } from "react-icons/fa";
-import { FiDownload, FiUpload } from "react-icons/fi";
-import { BsMinecartLoaded } from "react-icons/bs";
+import { FaRecycle } from "react-icons/fa"
+import { FiDownload, FiUpload } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Content = () => {
-  const { cersDb, getCerCarico, getCerScarico } = useContext(ContextData);
+  const { cersDb, getSelectedCer } = useContext(ContextData)
 
   return (
     <div className="wrapper-content">
@@ -17,8 +17,8 @@ export const Content = () => {
         {cersDb.map((cer) => {
           return (
             <li
-              key={cer.cer}
               className="li-content"
+              key={cer.cer}
               style={{ color: cer.colore }}
             >
               <div className="img-content">
@@ -27,28 +27,28 @@ export const Content = () => {
               <div className="cer-content">CER {cer.cer}</div>
               <div className="descrizione-content">{cer.descrizione}</div>
               <div className="mc-content">
-                {cer.mc} / 36 <BsMinecartLoaded />
+                {cer.mcTotali} / 36 <BsMinecartLoaded />
               </div>
               <Link to="/carico">
                 <button
-                  onClick={() => getCerCarico(cer.cer)}
-                  className="carico-content"
+                  className="btn-carico-content"
+                  onClick={() => getSelectedCer(cer.cer)}
                 >
                   <FiDownload size={20} />
                 </button>
               </Link>
               <Link to="/scarico">
                 <button
-                  onClick={() => getCerScarico(cer.cer)}
-                  className="scarico-content"
+                  className="btn-scarico-content"
+                  /*   onClick={() => getCerScarico(cer.cer)} */
                 >
                   <FiUpload size={20} />
                 </button>
               </Link>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
-};
+  )
+}

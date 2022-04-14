@@ -1,22 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"
 // DATABASE
-import { cers } from "./variables/cers";
+import { cers } from "./variables/cers"
 // CONTEXT
-export const ContextData = React.createContext();
+export const ContextData = React.createContext()
 
 export const ContextProvider = (props) => {
   // STATE
-  const [cersDb, setCersDb] = useState(cers);
-  const [selectedCer, setSelectedCer] = useState([]);
-  const [rifProgressivo, setRifProgressivo] = useState(1);
-  const [mcCarico, setMcCarico] = useState(0);
+  const [cersDb, setCersDb] = useState(cers)
+  const [selectedCer, setSelectedCer] = useState([])
+  const [mcInputCarico, setMcInputCarico] = useState(0)
+  const [rifProgressivo, setRifProgressivo] = useState(1)
+  /*
   const [logs, setLogs] = useState([]);
-  const [filteredLogs, setFilteredLogs] = useState([]);
+  const [filteredLogs, setFilteredLogs] = useState([]); */
 
   // GET DATE
-  const today = new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString()
 
-  // GET SELECTED CER CARICO
+  // GET SELECTED CER
+  const getSelectedCer = (cer) =>
+    setSelectedCer(cersDb.filter((c) => c.cer === cer))
+
+  // INCREMENTA RIF. PROGRESSIVO
+  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
+
+  const updateMcSelectedCer = (cer) => {
+    setCersDb(
+      cersDb.map((c) => {
+        if (c.cer === cer) {
+          return {
+            ...c,
+            mcTotali: parseInt(c.mcTotali) + parseInt(mcInputCarico),
+            carico: [
+              ...c.carico,
+              { rif: rifProgressivo, mc: mcInputCarico, stato: false },
+            ],
+          }
+        } else {
+          return c
+        }
+      })
+    )
+  }
+
+  useEffect(() => {
+    setSelectedCer([{ ...selectedCer[0], mcTotali: 3 }])
+    setMcInputCarico(0)
+    incrementaRifProgressivo()
+  }, [cersDb])
+
+  /*   // GET SELECTED CER CARICO
   const getCerCarico = (cer) => {
     setSelectedCer(cersDb.filter((c) => c.cer === cer));
   };
@@ -72,25 +105,31 @@ export const ContextProvider = (props) => {
 
   // FILTRA LOG PER CER
   const logFiltered = (cer) =>
-    setFilteredLogs(logs.filter((log) => log.cer === cer));
+    setFilteredLogs(logs.filter((log) => log.cer === cer)); */
 
   return (
     <ContextData.Provider
       value={{
-        getCerCarico,
+        cersDb,
+        selectedCer,
+        getSelectedCer,
+        mcInputCarico,
+        setMcInputCarico,
+        rifProgressivo,
+        updateMcSelectedCer,
+        /*      getCerCarico,
         getCerScarico,
         selectedCer,
-        cersDb,
         caricoMateriale,
         mcCarico,
         setMcCarico,
         rifProgressivo,
         logs,
         logFiltered,
-        filteredLogs,
+        filteredLogs, */
       }}
     >
       {props.children}
     </ContextData.Provider>
-  );
-};
+  )
+}

@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content";
+import { Content } from "./Content"
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs";
-import { FiDownload } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs"
+import { FiDownload } from "react-icons/fi"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Carico = () => {
   const {
-    caricoMateriale,
     selectedCer,
-    mcCarico,
-    setMcCarico,
+    mcInputCarico,
+    setMcInputCarico,
     rifProgressivo,
-  } = useContext(ContextData);
+    updateMcSelectedCer,
+  } = useContext(ContextData)
 
   return (
     <>
@@ -28,22 +28,22 @@ export const Carico = () => {
           <div className="descrizione-carico">{selectedCer[0].descrizione}</div>
           <div className="rif-carico">Rif. {rifProgressivo}/2022</div>
           <div className="mc-carico">
-            {selectedCer[0].mc} / 36 <BsMinecartLoaded />
+            {selectedCer[0].mcTotali} / 36 <BsMinecartLoaded />
           </div>
           <div className="wrapper-input-carico">
             <input
               className="input-carico"
               name="mc"
               type="number"
-              value={mcCarico}
-              onChange={(e) => setMcCarico(e.target.value)}
+              value={mcInputCarico}
+              onChange={(e) => setMcInputCarico(e.target.value)}
               onFocus={(e) => (e.target.value = "")}
             />
             <label htmlFor="mc"> mc</label>
           </div>
           <button
-            className="carico-carico"
-            onClick={() => caricoMateriale(selectedCer[0].cer)}
+            className="btn-carico-carico"
+            onClick={() => updateMcSelectedCer(selectedCer[0].cer)}
           >
             <FiDownload size={20} />
           </button>
@@ -52,5 +52,5 @@ export const Carico = () => {
         <Content />
       )}
     </>
-  );
-};
+  )
+}
