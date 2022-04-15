@@ -22,9 +22,9 @@ function App() {
             <Routes>
               <Route path="*" element={<Error />} />
               <Route path="/" element={<Content />} />
-              <Route path="/carico" element={<Carico />} />
+              {/* <Route path="/carico" element={<Carico />} />
               <Route path="/scarico" element={<Scarico />} />
-              <Route path="/log" element={<Log />} />
+              <Route path="/log" element={<Log />} /> */}
             </Routes>
           </BrowserRouter>
         </div>

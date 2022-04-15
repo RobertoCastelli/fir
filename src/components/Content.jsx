@@ -9,7 +9,7 @@ import { BsMinecartLoaded } from "react-icons/bs";
 import { ContextData } from "../context";
 
 export const Content = () => {
-  const { cersDb, getCer } = useContext(ContextData);
+  const { cersDb, getSelectedCer } = useContext(ContextData);
 
   return (
     <div className="wrapper-content">
@@ -31,7 +31,7 @@ export const Content = () => {
               </div>
               <Link to="/carico">
                 <button
-                  onClick={() => getCer(cer.cer)}
+                  onClick={() => getSelectedCer(cer.cer)}
                   className="carico-content"
                 >
                   <FiDownload size={20} />
@@ -39,7 +39,7 @@ export const Content = () => {
               </Link>
               <Link to="/scarico">
                 <button
-                  onClick={() => getCer(cer.cer)}
+                  onClick={() => getSelectedCer(cer.cer)}
                   className="scarico-content"
                 >
                   <FiUpload size={20} />
