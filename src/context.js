@@ -1,54 +1,85 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react"
 // DATABASE
-import { cers } from "./variables/cers";
+import { cers } from "./variables/cers"
 // CONTEXT
-export const ContextData = React.createContext();
+export const ContextData = React.createContext()
 
 export const ContextProvider = (props) => {
   // STATE
-  const [cersDb, setCersDb] = useState(cers);
-  const [selectedCer, setSelectedCer] = useState([]);
-  const [mcInputCarico, setMcInputCarico] = useState(0);
-  const [rifProgressivo, setRifProgressivo] = useState(0);
+  const [cersDb, setCersDb] = useState(cers)
+  const [selectedCer, setSelectedCer] = useState([])
+  const [mcInputCarico, setMcInputCarico] = useState(0)
+  const [rifProgressivo, setRifProgressivo] = useState(1)
+  const [sommaMcTotali, setSommaMcTotali] = useState(0)
+  const [logs, setLogs] = useState([])
+
   /*
   const [logs, setLogs] = useState([]);
   const [filteredLogs, setFilteredLogs] = useState([]); */
 
   // GET DATE
-  const today = new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString()
 
   // MOSTRA CER SELEZIONATO
   const showSelectedCer = (cer) =>
-    setSelectedCer(cersDb.filter((c) => c.cer === cer));
+    setSelectedCer(cersDb.filter((c) => c.cer === cer))
 
-  // AGGIORNA MC-MCTOTALI-RIF-STATO NEL CER SELEZIONATO
-  const updateMcSelectedCer = (cer) => {
+  // AGGIORNA MC-TOTALI NEL CER SELEZIONATO
+  const updateMcTotaliSelectedCer = () =>
+    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaMcTotali }])
+
+  // INCREMENTA RIF. PROGRESSIVO
+  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
+
+  //TODO: SOMMA MC-TOTALI DEI CARICHI
+  const sommaCarichi = () => {}
+
+  // AGGIORNA LOG CARICO
+  const updateLog = (cer) => {
+    setLogs([
+      ...logs,
+      {
+        today,
+        cer,
+        rifProgressivo,
+        mcInputCarico,
+      },
+    ])
+  }
+
+  // AGGIORNA MC, MC-TOTALI, RIF, STATO NEL CERDB
+  const updateDataSelectedCer = (cer) => {
     setCersDb(
       cersDb.map((c) => {
         if (c.cer === cer) {
           return {
             ...c,
-            mcTotali: parseInt(c.mcTotali) + parseInt(mcInputCarico),
+            mcTotali: sommaMcTotali,
             carico: [
               ...c.carico,
-              { rif: rifProgressivo, mc: mcInputCarico, stato: false },
+              {
+                rif: rifProgressivo,
+                mc: mcInputCarico,
+                stato: false,
+              },
             ],
-          };
+          }
         } else {
-          return c;
+          return c
         }
       })
-    );
-    console.log(cersDb);
-  };
+    )
+  }
+  console.log(cersDb)
 
-  // INCREMENTA RIF. PROGRESSIVO
-  useEffect(() => {
-    const incrementaRifProgressivo = () =>
-      setRifProgressivo(rifProgressivo + 1);
-
-    return () => incrementaRifProgressivo();
-  }, [cersDb, rifProgressivo]);
+  // AGGIORNA I DATI
+  const updateCers = (cer) => {
+    updateDataSelectedCer(cer)
+    updateLog(cer)
+    updateMcTotaliSelectedCer()
+    incrementaRifProgressivo()
+    setMcInputCarico(0)
+  }
 
   /*   // GET SELECTED CER CARICO
   const getCerCarico = (cer) => {
@@ -120,7 +151,8 @@ export const ContextProvider = (props) => {
         mcInputCarico,
         setMcInputCarico,
         rifProgressivo,
-        updateMcSelectedCer,
+        updateCers,
+        logs,
         /*      getCerCarico,
         getCerScarico,
         selectedCer,
@@ -135,5 +167,5 @@ export const ContextProvider = (props) => {
     >
       {props.children}
     </ContextData.Provider>
-  );
-};
+  )
+}

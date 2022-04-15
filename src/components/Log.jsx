@@ -1,11 +1,11 @@
-/* import React, { useContext } from "react";
+import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content";
+import { Content } from "./Content"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
-// export const Log = () => {
-//   const { logs } = useContext(ContextData);
+export const Log = () => {
+  const { logs } = useContext(ContextData)
 
   return (
     <>
@@ -17,10 +17,11 @@ import { ContextData } from "../context";
                 <li key={i} className="li-log">
                   <div className="li-rif">{log.rifProgressivo}</div>
                   <div className="li-details">
-                    {log.attivita} {log.today} CER {log.cer} ➟ {log.mcCarico} mc
+                    {log.attivita} {log.today} CER {log.cer} ➟
+                    {log.mcInputCarico} mc
                   </div>
                 </li>
-              );
+              )
             })}
           </ul>
         </div>
@@ -28,6 +29,5 @@ import { ContextData } from "../context";
         <Content />
       )}
     </>
-  );
-};
- */
+  )
+}

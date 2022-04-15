@@ -41,4 +41,4 @@ export let cers = [
     colore: "green",
     carico: [],
   },
-];
+]
