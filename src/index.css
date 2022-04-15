@@ -1,6 +1,12 @@
 /********/
 /* MAIN */
 /********/
+:root {
+  --black: #333;
+  --white: #f4f4f4;
+  --red: #9c2823;
+  --green: #95DC98
+}
 body {
   margin: 0;
   padding: 0;
@@ -11,29 +17,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-:root {
-  --black: #333;
-  --white: #f4f4f4;
-  --red: #9c2823;
-  --green: #95DC98
-
-}
 * {
   box-sizing: border-box;
-}
-
-/*************/
-/* CONTAINER */
-/*************/
-.container {
-  display: flex;
-  flex-direction: column;
-  max-width: 1024px;
-  min-height: 100vh;
-  margin: auto;
-}
-.content {
-  flex-grow: 1;
 }
 h1 {
   color: var(--red);
@@ -53,6 +38,20 @@ button {
 button:active {
   transform: translateY(1px);
   box-shadow: 1px 1px 2px -1px var(--black);
+}
+
+/*************/
+/* CONTAINER */
+/*************/
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1024px;
+  min-height: 100vh;
+  margin: auto;
+}
+.content {
+  flex-grow: 1;
 }
 
 /*********/
@@ -153,16 +152,16 @@ button:active {
   text-transform: uppercase;
   text-align: center;
 }
-.carico-content {
+.btn-carico-content {
   grid-area: carico;
 }
-.scarico-content {
+.btn-scarico-content {
   grid-area: scarico;
 }
 
-/*******************/
-/* CARICO  SCARICO */
-/*******************/
+/********************/
+/* CARICO & SCARICO */
+/********************/
 .wrapper-carico,
 .wrapper-scarico {
   margin: 1rem auto;
@@ -212,8 +211,8 @@ button:active {
   padding: 0.5rem;
   width: 80px;
 }
-.carico-carico,
-.carico-scarico {
+.btn-carico-carico,
+.btn-carico-scarico {
   grid-area: carico;
   align-items: center;
 }

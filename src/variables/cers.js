@@ -4,7 +4,7 @@ export let cers = [
     descrizione: "rifiuti misti",
     mcTotali: 0,
     colore: "blue",
-    carico: [{ rif: 1, mc: 10 }],
+    carico: [],
   },
   {
     cer: 170405,

@@ -6,8 +6,8 @@ import { Content } from "./components/Content";
 import { Footer } from "./components/Footer";
 import { Title } from "./components/Title";
 import { Carico } from "./components/Carico";
-import { Scarico } from "./components/Scarico";
-import { Log } from "./components/Log";
+/* import { Scarico } from "./components/Scarico";
+import { Log } from "./components/Log"; */
 import { Error } from "./components/Error";
 // CONTEXT
 import { ContextProvider } from "./context";
@@ -22,8 +22,8 @@ function App() {
             <Routes>
               <Route path="*" element={<Error />} />
               <Route path="/" element={<Content />} />
-              {/* <Route path="/carico" element={<Carico />} />
-              <Route path="/scarico" element={<Scarico />} />
+              <Route path="/carico" element={<Carico />} />
+              {/*               <Route path="/scarico" element={<Scarico />} />
               <Route path="/log" element={<Log />} /> */}
             </Routes>
           </BrowserRouter>

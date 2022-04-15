@@ -9,7 +9,7 @@ import { BsMinecartLoaded } from "react-icons/bs";
 import { ContextData } from "../context";
 
 export const Content = () => {
-  const { cersDb, getSelectedCer } = useContext(ContextData);
+  const { cersDb, showSelectedCer } = useContext(ContextData);
 
   return (
     <div className="wrapper-content">
@@ -17,8 +17,8 @@ export const Content = () => {
         {cersDb.map((cer) => {
           return (
             <li
-              key={cer.cer}
               className="li-content"
+              key={cer.cer}
               style={{ color: cer.colore }}
             >
               <div className="img-content">
@@ -27,20 +27,20 @@ export const Content = () => {
               <div className="cer-content">CER {cer.cer}</div>
               <div className="descrizione-content">{cer.descrizione}</div>
               <div className="mc-content">
-                {cer.mc} / 36 <BsMinecartLoaded />
+                {cer.mcTotali} / 36 <BsMinecartLoaded />
               </div>
               <Link to="/carico">
                 <button
-                  onClick={() => getSelectedCer(cer.cer)}
-                  className="carico-content"
+                  className="btn-carico-content"
+                  onClick={() => showSelectedCer(cer.cer)}
                 >
                   <FiDownload size={20} />
                 </button>
               </Link>
               <Link to="/scarico">
                 <button
-                  onClick={() => getSelectedCer(cer.cer)}
-                  className="scarico-content"
+                  className="btn-scarico-content"
+                  /*   onClick={() => getCerScarico(cer.cer)} */
                 >
                   <FiUpload size={20} />
                 </button>
