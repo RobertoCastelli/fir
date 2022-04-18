@@ -247,11 +247,12 @@ button:active {
 .li-rif {
   position: absolute;
   top: -20px;
-  width: 30px;
+  width: 50px;
   height: 30px;
   padding: 8px;
   font-weight: bold;
   background-color: var(--green);
+  box-shadow: 5px 5px 10px -5px var(--black);
   border-bottom-left-radius: 0.5rem;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;

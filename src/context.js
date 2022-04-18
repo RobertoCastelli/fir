@@ -10,41 +10,33 @@ export const ContextProvider = (props) => {
   const [selectedCer, setSelectedCer] = useState([])
   const [mcInputCarico, setMcInputCarico] = useState(0)
   const [rifProgressivo, setRifProgressivo] = useState(1)
-  const [sommaMcTotali, setSommaMcTotali] = useState(0)
   const [logs, setLogs] = useState([])
 
-  /*
-  const [logs, setLogs] = useState([]);
-  const [filteredLogs, setFilteredLogs] = useState([]); */
-
   // GET DATE
-  const today = new Date().toLocaleDateString()
+  const today = new Date().toLocaleDateString().slice(0, 4)
 
   // MOSTRA CER SELEZIONATO
   const showSelectedCer = (cer) =>
     setSelectedCer(cersDb.filter((c) => c.cer === cer))
 
-  // AGGIORNA MC-TOTALI NEL CER SELEZIONATO
-  const updateMcTotaliSelectedCer = () =>
-    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaMcTotali }])
-
   // INCREMENTA RIF. PROGRESSIVO
   const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
 
-  //TODO: SOMMA MC-TOTALI DEI CARICHI
-  const sommaCarichi = () => {}
+  // AGGIORNA MC-TOTALI NEL CER SELEZIONATO
+  const updateMcTotaliSelectedCer = (cer) =>
+    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
 
-  // AGGIORNA LOG CARICO
-  const updateLog = (cer) => {
-    setLogs([
-      ...logs,
-      {
-        today,
-        cer,
-        rifProgressivo,
-        mcInputCarico,
-      },
-    ])
+  // SOMMA MC-TOTALI DEI CARICHI
+  const sommaCarichi = (cer) => {
+    let arr = [mcInputCarico]
+    cersDb.map((c) => {
+      if (c.cer === cer) {
+        return c.carico.forEach((e) => arr.push(e.mc))
+      } else {
+        return c
+      }
+    })
+    return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0)
   }
 
   // AGGIORNA MC, MC-TOTALI, RIF, STATO NEL CERDB
@@ -54,7 +46,7 @@ export const ContextProvider = (props) => {
         if (c.cer === cer) {
           return {
             ...c,
-            mcTotali: sommaMcTotali,
+            mcTotali: sommaCarichi(cer),
             carico: [
               ...c.carico,
               {
@@ -72,11 +64,24 @@ export const ContextProvider = (props) => {
   }
   console.log(cersDb)
 
+  // AGGIORNA LOG CARICO
+  const updateLog = (cer) => {
+    setLogs([
+      ...logs,
+      {
+        today,
+        cer,
+        rifProgressivo,
+        mcInputCarico,
+      },
+    ])
+  }
+
   // AGGIORNA I DATI
   const updateCers = (cer) => {
     updateDataSelectedCer(cer)
     updateLog(cer)
-    updateMcTotaliSelectedCer()
+    updateMcTotaliSelectedCer(cer)
     incrementaRifProgressivo()
     setMcInputCarico(0)
   }
@@ -153,16 +158,6 @@ export const ContextProvider = (props) => {
         rifProgressivo,
         updateCers,
         logs,
-        /*      getCerCarico,
-        getCerScarico,
-        selectedCer,
-        caricoMateriale,
-        mcCarico,
-        setMcCarico,
-        rifProgressivo,
-        logs,
-        logFiltered,
-        filteredLogs, */
       }}
     >
       {props.children}
