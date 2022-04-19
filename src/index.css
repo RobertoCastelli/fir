@@ -225,11 +225,11 @@ button:active {
 }
 .ul-log,
 .ul-filtered {
-  padding: 0.5rem;
+  padding: 0;
   margin: auto;
 }
 .li-filtered {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   list-style: none;
 }
 .li-log {
