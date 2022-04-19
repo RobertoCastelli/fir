@@ -13,23 +13,27 @@ export const ContextProvider = (props) => {
   const [logs, setLogs] = useState([])
   const [filteredState, setFilteredState] = useState([])
 
+  /***********************/
+  /** START FASE CARICO **/
+  /***********************/
+
   // GET DATE
   const today = new Date().toLocaleDateString().slice(0, 4)
+  const year = new Date()
+    .getFullYear()
+    .toString()
+    .slice(-2)
 
-  // MOSTRA CER SELEZIONATO
+  // INCREMENTA RIF. PROGRESSIVO CARICO/SCARICO
+  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
+
+  // PRENDI CASSONE SELEZIONATO
   const showSelectedCer = (cer) => {
     setSelectedCer(cersDb.filter((c) => c.cer === cer))
     return getFilteredStateCarico(cer)
   }
 
-  // INCREMENTA RIF. PROGRESSIVO
-  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
-
-  // AGGIORNA MC-TOTALI NEL CER SELEZIONATO
-  const updateMcTotaliSelectedCer = (cer) =>
-    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
-
-  // SOMMA MC-TOTALI DEI CARICHI
+  // SOMMA MC-TOTALI DEI CARICHI DEL CASSONE
   const sommaCarichi = (cer) => {
     let arr = [mcInputCarico]
     cersDb.map((c) => {
@@ -42,7 +46,11 @@ export const ContextProvider = (props) => {
     return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0)
   }
 
-  // AGGIORNA CARICO MC, MC-TOTALI, RIF, STATO NEL CERDB
+  // AGGIORNA MC-TOTALI NEL CASSONE SELEZIONATO
+  const updateMcTotaliSelectedCer = (cer) =>
+    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
+
+  // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
   const updateDataSelectedCerCarico = (cer) => {
     setCersDb(
       cersDb.map((c) => {
@@ -65,7 +73,6 @@ export const ContextProvider = (props) => {
       })
     )
   }
-  console.log(cersDb)
 
   // AGGIORNA LOG CARICO
   const updateLog = (cer) => {
@@ -74,94 +81,52 @@ export const ContextProvider = (props) => {
       {
         today,
         cer,
+        year,
         rifProgressivo,
         mcInputCarico,
       },
     ])
   }
 
-  // GET CARICHI NON ANCORA SCARICATI
-  const getFilteredStateCarico = (cer) => {
-    cersDb.map((c) => {
-      if (c.cer === cer) {
-        setFilteredState(c.carico.filter((elem) => elem.stato === false))
-      }
-    })
-  }
-
-  // AGGIORNA I DATI
+  // AGGIORNA TUTTI I DATI DEL CARICO
   const updateCersCarico = (cer) => {
-    updateDataSelectedCerCarico(cer)
-    updateLog(cer)
-    updateMcTotaliSelectedCer(cer)
-    incrementaRifProgressivo()
-    setMcInputCarico(0)
+    if (
+      mcInputCarico !== 0 &&
+      window.confirm(
+        `⚠️ CARICO CER ${selectedCer[0].cer} - rif.${rifProgressivo}/${year} ➟ ${mcInputCarico} mc?`
+      )
+    ) {
+      updateDataSelectedCerCarico(cer)
+      updateLog(cer)
+      updateMcTotaliSelectedCer(cer)
+      incrementaRifProgressivo()
+      setMcInputCarico(0)
+    } else {
+      alert("❌ Carico annullato!")
+    }
   }
+  /********************/
+  /** END FASE CARICO**/
+  /********************/
 
-  /*   // GET SELECTED CER CARICO
-  const getCerCarico = (cer) => {
-    setSelectedCer(cersDb.filter((c) => c.cer === cer));
-  };
+  /***********************/
+  /** START FASE SCARICO**/
+  /***********************/
 
-  // GET SELECTED CER SCARICO
-  const getCerScarico = (cer) => {
-    setSelectedCer(cersDb.filter((c) => c.cer === cer));
-
-  // INCREMENTA RIF. PROGRESSIVO
-  const incrementaRiferimentoProgressivo = () =>
-    setRifProgressivo(rifProgressivo + 1);
-
-  // GET SELECTED CER
-  // const getCer = (cer) => {
-  //   setSelectedCer(cersDb.filter((c) => c.cer === cer));
-  //   logFiltered(cer);
-  // };
-
-  // // AGGIORNA MC NEL CER + SET RIFERIMENTO PROGRESSIVO
-  // const updateMcSelectedCer = (cer) => {
-  //   setCersDb(
-  //     cersDb.map((c) => {
-  //       if (c.cer === cer) {
-  //         let mcAggiornati = parseInt(mcCarico) + parseInt(c.mc);
-  //         setSelectedCer([
-  //           {
-  //             ...selectedCer[0],
-  //             mc: mcAggiornati,
-  //             carico: [...mcCarico, mcCarico],
-  //           },
-  //         ]);
-  //         setRifProgressivo(logs.length + 2);
-  //         return { ...c, mc: mcAggiornati };
-  //       } else {
-  //         return c;
-  //       }
-  //     })
-  //   );
-  // };
-  // console.log(selectedCer);
-
-  // // AGGIORNA LOG CARICO
-  // const updateLogCarico = (cer) => {
-  //   setLogs([
-  //     ...logs,
-  //     {
-  //       today,
-  //       cer,
-  //       rifProgressivo,
-  //       mcCarico,
-  //       attivita: "Carico",
-  //     },
-  //   ]);
-  // };
-
-  // FILTRA LOG PER CER
-  const logFiltered = (cer) =>
-    setFilteredLogs(logs.filter((log) => log.cer === cer)); */
+  // GET ARRAY CARICHI NON ANCORA SCARICATI
+  const getFilteredStateCarico = (cer) => {
+    cersDb.map(
+      (c) =>
+        c.cer === cer &&
+        setFilteredState(c.carico.filter((elem) => elem.stato === false))
+    )
+  }
 
   return (
     <ContextData.Provider
       value={{
         today,
+        year,
         cersDb,
         selectedCer,
         showSelectedCer,

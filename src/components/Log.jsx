@@ -15,10 +15,11 @@ export const Log = () => {
             {logs.map((log, i) => {
               return (
                 <li key={i} className="li-log">
-                  <div className="li-rif">{log.rifProgressivo}</div>
+                  <div className="li-rif">
+                    {log.rifProgressivo}/{log.year}
+                  </div>
                   <div className="li-details">
-                    {log.attivita} {log.today} CER {log.cer} ➟{" "}
-                    {log.mcInputCarico} mc
+                    CARICO {log.today} CER {log.cer} ➟ {log.mcInputCarico} mc
                   </div>
                 </li>
               )

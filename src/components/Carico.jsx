@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content";
+import { Content } from "./Content"
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs";
-import { FiDownload } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs"
+import { FiDownload } from "react-icons/fi"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Carico = () => {
   const {
@@ -13,8 +13,9 @@ export const Carico = () => {
     mcInputCarico,
     setMcInputCarico,
     rifProgressivo,
+    year,
     updateCersCarico,
-  } = useContext(ContextData);
+  } = useContext(ContextData)
 
   return (
     <>
@@ -26,7 +27,9 @@ export const Carico = () => {
           <div className="title-carico">CARICO</div>
           <div className="cer-carico">CER {selectedCer[0].cer}</div>
           <div className="descrizione-carico">{selectedCer[0].descrizione}</div>
-          <div className="rif-carico">Rif. {rifProgressivo}/2022</div>
+          <div className="rif-carico">
+            Rif. {rifProgressivo}/{year}
+          </div>
           <div className="mc-carico">
             {selectedCer[0].mcTotali} / 36 <BsMinecartLoaded />
           </div>
@@ -52,5 +55,5 @@ export const Carico = () => {
         <Content />
       )}
     </>
-  );
-};
+  )
+}
