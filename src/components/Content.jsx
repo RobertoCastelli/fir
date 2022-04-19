@@ -40,7 +40,7 @@ export const Content = () => {
               <Link to="/scarico">
                 <button
                   className="btn-scarico-content"
-                  /*   onClick={() => getCerScarico(cer.cer)} */
+                  onClick={() => showSelectedCer(cer.cer)}
                 >
                   <FiUpload size={20} />
                 </button>

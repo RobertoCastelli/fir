@@ -1,46 +1,49 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 // DATABASE
-import { cers } from "./variables/cers"
+import { cers } from "./variables/cers";
 // CONTEXT
-export const ContextData = React.createContext()
+export const ContextData = React.createContext();
 
 export const ContextProvider = (props) => {
   // STATE
-  const [cersDb, setCersDb] = useState(cers)
-  const [selectedCer, setSelectedCer] = useState([])
-  const [mcInputCarico, setMcInputCarico] = useState(0)
-  const [rifProgressivo, setRifProgressivo] = useState(1)
-  const [logs, setLogs] = useState([])
+  const [cersDb, setCersDb] = useState(cers);
+  const [selectedCer, setSelectedCer] = useState([]);
+  const [mcInputCarico, setMcInputCarico] = useState(0);
+  const [rifProgressivo, setRifProgressivo] = useState(1);
+  const [logs, setLogs] = useState([]);
+  const [filteredState, setFilteredState] = useState([]);
 
   // GET DATE
-  const today = new Date().toLocaleDateString().slice(0, 4)
+  const today = new Date().toLocaleDateString().slice(0, 4);
 
   // MOSTRA CER SELEZIONATO
-  const showSelectedCer = (cer) =>
-    setSelectedCer(cersDb.filter((c) => c.cer === cer))
+  const showSelectedCer = (cer) => {
+    setSelectedCer(cersDb.filter((c) => c.cer === cer));
+    return getFilteredStateCarico(cer);
+  };
 
   // INCREMENTA RIF. PROGRESSIVO
-  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
+  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1);
 
   // AGGIORNA MC-TOTALI NEL CER SELEZIONATO
   const updateMcTotaliSelectedCer = (cer) =>
-    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
+    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }]);
 
   // SOMMA MC-TOTALI DEI CARICHI
   const sommaCarichi = (cer) => {
-    let arr = [mcInputCarico]
+    let arr = [mcInputCarico];
     cersDb.map((c) => {
       if (c.cer === cer) {
-        return c.carico.forEach((e) => arr.push(e.mc))
+        return c.carico.forEach((e) => arr.push(e.mc));
       } else {
-        return c
+        return c;
       }
-    })
-    return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0)
-  }
+    });
+    return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0);
+  };
 
-  // AGGIORNA MC, MC-TOTALI, RIF, STATO NEL CERDB
-  const updateDataSelectedCer = (cer) => {
+  // AGGIORNA CARICO MC, MC-TOTALI, RIF, STATO NEL CERDB
+  const updateDataSelectedCerCarico = (cer) => {
     setCersDb(
       cersDb.map((c) => {
         if (c.cer === cer) {
@@ -55,14 +58,14 @@ export const ContextProvider = (props) => {
                 stato: false,
               },
             ],
-          }
+          };
         } else {
-          return c
+          return c;
         }
       })
-    )
-  }
-  console.log(cersDb)
+    );
+  };
+  console.log(cersDb);
 
   // AGGIORNA LOG CARICO
   const updateLog = (cer) => {
@@ -74,17 +77,32 @@ export const ContextProvider = (props) => {
         rifProgressivo,
         mcInputCarico,
       },
-    ])
-  }
+    ]);
+  };
+
+  // GET CARICHI NON ANCORA SCARICATI
+  const getFilteredStateCarico = (cer) => {
+    setFilteredState(
+      cersDb.map((c) => {
+        if (c.cer === cer) {
+          return cersDb.map((cer) =>
+            cer.carico.filter((c) => c.stato === false)
+          );
+        } else {
+          return c;
+        }
+      })
+    );
+  };
 
   // AGGIORNA I DATI
-  const updateCers = (cer) => {
-    updateDataSelectedCer(cer)
-    updateLog(cer)
-    updateMcTotaliSelectedCer(cer)
-    incrementaRifProgressivo()
-    setMcInputCarico(0)
-  }
+  const updateCersCarico = (cer) => {
+    updateDataSelectedCerCarico(cer);
+    updateLog(cer);
+    updateMcTotaliSelectedCer(cer);
+    incrementaRifProgressivo();
+    setMcInputCarico(0);
+  };
 
   /*   // GET SELECTED CER CARICO
   const getCerCarico = (cer) => {
@@ -156,11 +174,12 @@ export const ContextProvider = (props) => {
         mcInputCarico,
         setMcInputCarico,
         rifProgressivo,
-        updateCers,
+        updateCersCarico,
         logs,
+        filteredState,
       }}
     >
       {props.children}
     </ContextData.Provider>
-  )
-}
+  );
+};

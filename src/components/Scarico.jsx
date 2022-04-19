@@ -1,19 +1,19 @@
-/* import React, { useContext } from "react";
+import React, { useContext } from "react";
 // COMPONENTS
 import { Content } from "./Content";
+import { FilteredStateCarico } from "./FilteredStateCarico";
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs";
 import { FiUpload } from "react-icons/fi";
 // CONTEXT
 import { ContextData } from "../context";
-import { LogFiltered } from "./LogFiltered";
 
-// export const Scarico = () => {
-//   const { selectedCer, rifProgressivo } = useContext(ContextData);
+export const Scarico = () => {
+  const { selectedCer, rifProgressivo } = useContext(ContextData);
 
   return (
     <>
-      {selectedCer[0].mc ? (
+      {selectedCer[0] ? (
         <div
           className="wrapper-scarico"
           style={{ color: selectedCer[0].colore }}
@@ -25,10 +25,10 @@ import { LogFiltered } from "./LogFiltered";
           </div>
           <div className="rif-scarico">Rif. {rifProgressivo}/2022</div>
           <div className="mc-scarico">
-            {selectedCer[0].mc} / 36 <BsMinecartLoaded />
+            {selectedCer[0].mcTotali} / 36 <BsMinecartLoaded />
           </div>
-          <div className="log-scarico">
-            <LogFiltered />
+          <div className="filtered-scarico">
+            <FilteredStateCarico />
           </div>
           <button className="carico-scarico">
             <FiUpload size={20} />
@@ -40,4 +40,3 @@ import { LogFiltered } from "./LogFiltered";
     </>
   );
 };
- */

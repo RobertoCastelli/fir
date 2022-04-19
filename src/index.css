@@ -5,15 +5,15 @@
   --black: #333;
   --white: #f4f4f4;
   --red: #9c2823;
-  --green: #95DC98
+  --green: #95dc98;
 }
 body {
   margin: 0;
   padding: 0;
   letter-spacing: 0.09rem;
-  color:  var(--black);
+  color: var(--black);
   background: var(--white);
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -98,9 +98,9 @@ button:active {
 }
 
 /************************/
-/* TILES STYLE TEMPLATE */  
+/* TILES STYLE TEMPLATE */
 /************************/
-.li-content, 
+.li-content,
 .wrapper-carico,
 .wrapper-scarico {
   box-shadow: 5px 5px 15px -5px var(--black);
@@ -116,28 +116,27 @@ button:active {
 /***************************/
 /* TILES HOME PAGE CONTENT */
 /***************************/
-.ul-content{
+.ul-content {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   justify-content: center;
 }
-.li-content
-{
+.li-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(3, 1fr);
-  grid-template-areas: 
-  "image mc"
-  "cer descrizione"
-  "carico scarico";
-} 
+  grid-template-areas:
+    "image mc"
+    "cer descrizione"
+    "carico scarico";
+}
 .img-content {
   grid-area: image;
   border-radius: 1rem;
-  }
+}
 .cer-content {
   grid-area: cer;
   text-align: center;
@@ -168,14 +167,14 @@ button:active {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 50px 50px 50px auto;
-  grid-template-areas: 
-  "title title"
-  "cer descrizione"
-  "rif mc"
-  "input carico";
+  grid-template-areas:
+    "title title"
+    "cer descrizione"
+    "rif mc"
+    "input carico";
 }
 .title-carico,
-.title-scarico{
+.title-scarico {
   grid-area: title;
   font-size: large;
   font-weight: bold;
@@ -199,13 +198,13 @@ button:active {
   text-align: center;
 }
 .wrapper-input-carico,
-.log-scarico {
+.filtered-scarico {
   grid-area: input;
   justify-self: flex-start;
 }
 .input-carico {
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 1rem; 
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1rem;
   border: 2px dotted var(--black);
   border-radius: 0.5rem;
   padding: 0.5rem;
@@ -240,7 +239,7 @@ button:active {
   background-color: white;
 }
 .li-details {
-  padding: 1rem ;
+  padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 5px 5px 15px -5px var(--black);
 }
@@ -258,7 +257,6 @@ button:active {
   border-top-right-radius: 0.5rem;
 }
 
-
 /*********/
 /* ERROR */
 /******^^*/
@@ -266,7 +264,3 @@ button:active {
 .error-carico {
   text-align: center;
 }
-
-
-
-

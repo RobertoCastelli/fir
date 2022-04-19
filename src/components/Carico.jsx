@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
+import React, { useContext } from "react";
 // COMPONENTS
-import { Content } from "./Content"
+import { Content } from "./Content";
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs"
-import { FiDownload } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs";
+import { FiDownload } from "react-icons/fi";
 // CONTEXT
-import { ContextData } from "../context"
+import { ContextData } from "../context";
 
 export const Carico = () => {
   const {
@@ -13,8 +13,8 @@ export const Carico = () => {
     mcInputCarico,
     setMcInputCarico,
     rifProgressivo,
-    updateCers,
-  } = useContext(ContextData)
+    updateCersCarico,
+  } = useContext(ContextData);
 
   return (
     <>
@@ -43,7 +43,7 @@ export const Carico = () => {
           </div>
           <button
             className="btn-carico-carico"
-            onClick={() => updateCers(selectedCer[0].cer)}
+            onClick={() => updateCersCarico(selectedCer[0].cer)}
           >
             <FiDownload size={20} />
           </button>
@@ -52,5 +52,5 @@ export const Carico = () => {
         <Content />
       )}
     </>
-  )
-}
+  );
+};
