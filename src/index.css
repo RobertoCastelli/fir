@@ -225,7 +225,7 @@ button:active {
 }
 .ul-log,
 .ul-filtered {
-  padding: 0;
+  padding: 0.5rem;
   margin: auto;
 }
 .li-filtered {
@@ -246,7 +246,7 @@ button:active {
 .li-rif {
   position: absolute;
   top: -20px;
-  width: 50px;
+  width: 70px;
   height: 30px;
   padding: 8px;
   font-weight: bold;

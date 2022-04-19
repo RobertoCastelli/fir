@@ -12,10 +12,7 @@ export const ContextProvider = (props) => {
   const [rifProgressivo, setRifProgressivo] = useState(1)
   const [logs, setLogs] = useState([])
   const [filteredState, setFilteredState] = useState([])
-
-  /***********************/
-  /** START FASE CARICO **/
-  /***********************/
+  const [filteredStateTemp, setFilteredStateTemp] = useState([])
 
   // GET DATE
   const today = new Date().toLocaleDateString().slice(0, 4)
@@ -46,8 +43,12 @@ export const ContextProvider = (props) => {
     return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0)
   }
 
+  /***********************/
+  /** START FASE CARICO **/
+  /***********************/
+
   // AGGIORNA MC-TOTALI NEL CASSONE SELEZIONATO
-  const updateMcTotaliSelectedCer = (cer) =>
+  const updateMcTotaliSelectedCerCarico = (cer) =>
     setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
 
   // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
@@ -75,7 +76,7 @@ export const ContextProvider = (props) => {
   }
 
   // AGGIORNA LOG CARICO
-  const updateLog = (cer) => {
+  const updateLogCarico = (cer) => {
     setLogs([
       ...logs,
       {
@@ -97,8 +98,8 @@ export const ContextProvider = (props) => {
       )
     ) {
       updateDataSelectedCerCarico(cer)
-      updateLog(cer)
-      updateMcTotaliSelectedCer(cer)
+      updateLogCarico(cer)
+      updateMcTotaliSelectedCerCarico(cer)
       incrementaRifProgressivo()
       setMcInputCarico(0)
     } else {
@@ -122,6 +123,14 @@ export const ContextProvider = (props) => {
     )
   }
 
+  const handleChange = (index) => {}
+
+  const updateCersScarico = () => {
+    // change filter state
+    // chage mc totals
+    // update log scarico
+  }
+
   return (
     <ContextData.Provider
       value={{
@@ -136,6 +145,8 @@ export const ContextProvider = (props) => {
         updateCersCarico,
         logs,
         filteredState,
+        handleChange,
+        updateCersScarico,
       }}
     >
       {props.children}

@@ -19,7 +19,7 @@ export const Log = () => {
                     {log.rifProgressivo}/{log.year}
                   </div>
                   <div className="li-details">
-                    CARICO {log.today} CER {log.cer} ➟ {log.mcInputCarico} mc
+                    {log.today} C - CER {log.cer} ➟ {log.mcInputCarico} mc
                   </div>
                 </li>
               )

@@ -36,6 +36,7 @@ export const Carico = () => {
           <div className="wrapper-input-carico">
             <input
               className="input-carico"
+              min="0"
               name="mc"
               type="number"
               value={mcInputCarico}

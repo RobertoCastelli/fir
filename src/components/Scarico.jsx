@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content";
-import { FilteredStateCarico } from "./FilteredStateCarico";
+import { Content } from "./Content"
+import { FilteredStateCarico } from "./FilteredStateCarico"
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs";
-import { FiUpload } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs"
+import { FiUpload } from "react-icons/fi"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Scarico = () => {
-  const { selectedCer, rifProgressivo } = useContext(ContextData);
+  const { selectedCer, rifProgressivo, updateCersScarico } = useContext(
+    ContextData
+  )
 
   return (
     <>
@@ -30,7 +32,10 @@ export const Scarico = () => {
           <div className="filtered-scarico">
             <FilteredStateCarico />
           </div>
-          <button className="carico-scarico">
+          <button
+            className="carico-scarico"
+            onClick={() => updateCersScarico(selectedCer[0].cer)}
+          >
             <FiUpload size={20} />
           </button>
         </div>
@@ -38,5 +43,5 @@ export const Scarico = () => {
         <Content />
       )}
     </>
-  );
-};
+  )
+}
