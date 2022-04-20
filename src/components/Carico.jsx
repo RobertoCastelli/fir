@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
+import React, { useContext } from "react";
 // COMPONENTS
-import { Content } from "./Content"
+import { Content } from "./Content";
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs"
-import { FiDownload } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs";
+import { FiDownload } from "react-icons/fi";
 // CONTEXT
-import { ContextData } from "../context"
+import { ContextData } from "../context";
 
 export const Carico = () => {
   const {
@@ -15,7 +15,7 @@ export const Carico = () => {
     rifProgressivo,
     year,
     updateCersCarico,
-  } = useContext(ContextData)
+  } = useContext(ContextData);
 
   return (
     <>
@@ -40,7 +40,11 @@ export const Carico = () => {
               name="mc"
               type="number"
               value={mcInputCarico}
-              onChange={(e) => setMcInputCarico(e.target.value)}
+              onChange={(e) =>
+                e.target.value < 0
+                  ? setMcInputCarico(e.target.value * -1)
+                  : setMcInputCarico(e.target.value)
+              }
               onFocus={(e) => (e.target.value = "")}
             />
             <label htmlFor="mc"> mc</label>
@@ -56,5 +60,5 @@ export const Carico = () => {
         <Content />
       )}
     </>
-  )
-}
+  );
+};
