@@ -13,7 +13,7 @@ export const ContextProvider = (props) => {
   const [logs, setLogs] = useState([])
   const [filteredState, setFilteredState] = useState([])
 
-  // GET DATE
+  // GET DATE && YEAR
   const today = new Date().toLocaleDateString().slice(0, 4)
   const year = new Date()
     .getFullYear()
@@ -47,8 +47,11 @@ export const ContextProvider = (props) => {
     setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
 
   /***********************/
+  /***********************/
   /** START FASE CARICO **/
   /***********************/
+  /***********************/
+
   // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
   const updateDataSelectedCerCarico = (cer) => {
     setCersDb(
@@ -109,7 +112,9 @@ export const ContextProvider = (props) => {
   /*___________________*/
 
   /************************/
+  /************************/
   /** START FASE SCARICO **/
+  /************************/
   /************************/
 
   // GET ARRAY CARICHI NON ANCORA SCARICATI
@@ -134,6 +139,7 @@ export const ContextProvider = (props) => {
     )
   }
 
+  // AGGIORNA SCARICO ==> MC-TOTALI
   const updateDataSelectedCerScarico = (cer) => {
     setCersDb(
       cersDb.map((c) => {
@@ -156,7 +162,6 @@ export const ContextProvider = (props) => {
     incrementaRifProgressivo()
     console.log(cersDb)
   }
-
   /*^^^^^^^^^^^^^^^^^^^^*/
   /** END FASE SCARICO **/
   /*____________________*/
