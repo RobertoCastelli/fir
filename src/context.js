@@ -132,6 +132,7 @@ export const ContextProvider = (props) => {
         })
       )
     );
+    console.log(selectedCer);
   };
 
   const updateCersScarico = () => {
