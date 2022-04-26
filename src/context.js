@@ -12,6 +12,7 @@ export const ContextProvider = (props) => {
   const [rifProgressivo, setRifProgressivo] = useState(1)
   const [logs, setLogs] = useState([])
   const [filteredState, setFilteredState] = useState([])
+  const [temp, setTemp] = useState([])
 
   // GET DATE && YEAR
   const today = new Date().toLocaleDateString().slice(0, 4)
@@ -137,6 +138,7 @@ export const ContextProvider = (props) => {
         }
       })
     )
+    console.log(selectedCer[0].carico)
   }
 
   // AGGIORNA SCARICO ==> MC-TOTALI
@@ -160,12 +162,12 @@ export const ContextProvider = (props) => {
     updateDataSelectedCerScarico(cer)
     updateMcTotaliSelectedCer(cer)
     incrementaRifProgressivo()
-    console.log(cersDb)
   }
   /*^^^^^^^^^^^^^^^^^^^^*/
   /** END FASE SCARICO **/
   /*____________________*/
 
+  // RENDER
   return (
     <ContextData.Provider
       value={{
