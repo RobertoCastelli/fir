@@ -12,9 +12,8 @@ export const ContextProvider = (props) => {
   const [rifProgressivo, setRifProgressivo] = useState(1);
   const [logs, setLogs] = useState([]);
   const [filteredState, setFilteredState] = useState([]);
-  const [filteredStateTemp, setFilteredStateTemp] = useState([]);
 
-  // GET DATE
+  // GET DATE && YEAR
   const today = new Date().toLocaleDateString().slice(0, 4);
   const year = new Date().getFullYear().toString().slice(-2);
 
@@ -32,7 +31,7 @@ export const ContextProvider = (props) => {
     let arr = [mcInputCarico];
     cersDb.map((c) => {
       if (c.cer === cer) {
-        return c.carico.forEach((e) => arr.push(e.mc));
+        return c.carico.forEach((e) => e.stato === false && arr.push(e.mc));
       } else {
         return c;
       }
@@ -40,13 +39,15 @@ export const ContextProvider = (props) => {
     return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0);
   };
 
+  // AGGIORNA MC-TOTALI NEL CASSONE SELEZIONATO
+  const updateMcTotaliSelectedCer = (cer) =>
+    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }]);
+
+  /***********************/
   /***********************/
   /** START FASE CARICO **/
   /***********************/
-
-  // AGGIORNA MC-TOTALI NEL CASSONE SELEZIONATO
-  const updateMcTotaliSelectedCerCarico = (cer) =>
-    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }]);
+  /***********************/
 
   // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
   const updateDataSelectedCerCarico = (cer) => {
@@ -95,21 +96,24 @@ export const ContextProvider = (props) => {
       )
     ) {
       updateDataSelectedCerCarico(cer);
+      updateMcTotaliSelectedCer(cer);
       updateLogCarico(cer);
-      updateMcTotaliSelectedCerCarico(cer);
       incrementaRifProgressivo();
       setMcInputCarico(0);
     } else {
       alert("❌ Carico annullato!");
     }
   };
-  /********************/
-  /** END FASE CARICO**/
-  /********************/
+  console.log(filteredState, cersDb, "dopo carico");
+  /*^^^^^^^^^^^^^^^^^^^*/
+  /** END FASE CARICO **/
+  /*___________________*/
 
-  /***********************/
-  /** START FASE SCARICO**/
-  /***********************/
+  /************************/
+  /************************/
+  /** START FASE SCARICO **/
+  /************************/
+  /************************/
 
   // GET ARRAY CARICHI NON ANCORA SCARICATI
   const getFilteredStateCarico = (cer) => {
@@ -120,26 +124,59 @@ export const ContextProvider = (props) => {
     );
   };
 
+  // CHECKBOX ==> CAMBIA STATO CARICO/SCARICO
   const handleChange = (index) => {
-    setFilteredStateTemp(
-      selectedCer.map((elem) =>
-        elem.carico.forEach((e, i) => {
-          if (i === index) {
-            return (e.stato = !e.stato);
-          } else {
-            return e;
-          }
-        })
-      )
+    selectedCer.map((elem) =>
+      elem.carico.forEach((e, i) => {
+        if (i === index) {
+          return (e.stato = !e.stato);
+        } else {
+          return e.stato;
+        }
+      })
     );
-    console.log(selectedCer);
   };
 
-  const updateCersScarico = () => {
-    // change filter state
-    // update mc totals cer && cersdb
-    // update log scarico
+  // AGGIORNA SCARICO ==> MC-TOTALI
+  const updateDataSelectedCerScarico = (cer) => {
+    setCersDb(
+      cersDb.map((c) => {
+        if (c.cer === cer) {
+          return {
+            ...c,
+            mcTotali: sommaCarichi(cer),
+          };
+        } else {
+          return c;
+        }
+      })
+    );
   };
+
+  // AGGIORNA LOG SCARICO
+  const updateLogScarico = (cer) => {
+    setLogs([
+      ...logs,
+      {
+        today,
+        cer,
+        year,
+        rifProgressivo,
+      },
+    ]);
+  };
+
+  // AGGIORNA TUTTI I DATI DELLO SCARICO
+  const updateCersScarico = (cer) => {
+    updateDataSelectedCerScarico(cer);
+    updateMcTotaliSelectedCer(cer);
+    updateLogScarico(cer);
+    incrementaRifProgressivo();
+    console.log(filteredState, cersDb, "dopo scarico");
+  };
+  /*^^^^^^^^^^^^^^^^^^^^*/
+  /** END FASE SCARICO **/
+  /*____________________*/
 
   return (
     <ContextData.Provider

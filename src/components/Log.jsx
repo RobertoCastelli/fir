@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
+import React, { useContext } from "react";
 // COMPONENTS
-import { Content } from "./Content"
+import { Content } from "./Content";
 // CONTEXT
-import { ContextData } from "../context"
+import { ContextData } from "../context";
 
 export const Log = () => {
-  const { logs } = useContext(ContextData)
+  const { logs } = useContext(ContextData);
 
   return (
     <>
@@ -19,10 +19,10 @@ export const Log = () => {
                     {log.rifProgressivo}/{log.year}
                   </div>
                   <div className="li-details">
-                    {log.today} C - CER {log.cer} ➟ {log.mcInputCarico} mc
+                    {log.today} CER {log.cer} ➟ {log.mcInputCarico} mc
                   </div>
                 </li>
-              )
+              );
             })}
           </ul>
         </div>
@@ -30,5 +30,5 @@ export const Log = () => {
         <Content />
       )}
     </>
-  )
-}
+  );
+};
