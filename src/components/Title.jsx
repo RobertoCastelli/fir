@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 // ROUTER
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 // ICONS
-import { AiOutlineHome } from "react-icons/ai";
-import { ImListNumbered } from "react-icons/im";
+import { AiOutlineHome } from "react-icons/ai"
+import { ImListNumbered } from "react-icons/im"
 // IMAGES
-import bg from "../images/camion.png";
+import bg from "../images/camion.png"
 
 export const Title = () => {
   return (
@@ -17,14 +17,14 @@ export const Title = () => {
       </div>
       <Link to="/log">
         <button className="info-title">
-          <ImListNumbered size={20} />
+          <ImListNumbered size={30} />
         </button>
       </Link>
       <Link to="/">
         <button className="home-title">
-          <AiOutlineHome size={20} />
+          <AiOutlineHome size={30} />
         </button>
       </Link>
     </div>
-  );
-};
+  )
+}

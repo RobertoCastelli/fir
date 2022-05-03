@@ -6,13 +6,17 @@
   --white: #f4f4f4;
   --red: #9c2823;
   --green: #95dc98;
+  --blue: #394a51;
+  --lightgreen: #7fa99b;
+  --sand: #fbf2d5;
+  --coral: #fdc57b;
 }
 body {
   margin: 0;
   padding: 0;
   letter-spacing: 0.09rem;
-  color: var(--black);
-  background: var(--white);
+  color: var(--blue);
+  background: var(--sand);
   font-family: "Ubuntu", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,7 +25,7 @@ body {
   box-sizing: border-box;
 }
 h1 {
-  color: var(--red);
+  color: var(--blue);
   font-weight: bold;
 }
 button {
@@ -67,13 +71,13 @@ button:active {
   grid-area: home;
   margin: 1rem;
   background-color: var(--green);
-  color: var(--red);
+  color: var(--blue);
 }
 .info-title {
   grid-area: info;
   margin: 1rem;
   background-color: var(--green);
-  color: var(--red);
+  color: var(--blue);
 }
 .img-title {
   width: 300px;
@@ -111,6 +115,10 @@ button:active {
   width: 300px;
   margin: 1rem;
   padding: 1rem;
+  opacity: 0.7;
+}
+.li-content:hover {
+  opacity: 1;
 }
 
 /***************************/

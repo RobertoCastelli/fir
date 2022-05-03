@@ -1,39 +1,87 @@
-import React, { useState } from "react"
-// DATABASE
-import { cers } from "./variables/cers"
-// CONTEXT
+import React, { useState, useEffect } from "react"
+
+//--- FIREBASE
+import { db } from "./firebase"
+import { doc, getDocs, getDoc, updateDoc, collection } from "firebase/firestore"
+//--- CONTEXT
 export const ContextData = React.createContext()
 
 export const ContextProvider = (props) => {
-  // STATE
-  const [cersDb, setCersDb] = useState(cers)
-  const [selectedCer, setSelectedCer] = useState([])
+  //--- STATES
+  const [cassoni, setCassoni] = useState([])
+  const [cassone, setCassone] = useState([])
+  const [rifProgressivo, setRifProgressivo] = useState(0)
   const [mcInputCarico, setMcInputCarico] = useState(0)
-  const [rifProgressivo, setRifProgressivo] = useState(1)
-  const [logs, setLogs] = useState([])
-  const [filteredState, setFilteredState] = useState([])
-  const [temp, setTemp] = useState([])
+  /*   const [logs, setLogs] = useState([]) */
+  /*   const [filteredState, setFilteredState] = useState([]) */
 
-  // GET DATE && YEAR
+  //--- GET DATE && YEAR
   const today = new Date().toLocaleDateString().slice(0, 4)
   const year = new Date()
     .getFullYear()
     .toString()
     .slice(-2)
 
-  // INCREMENTA RIF. PROGRESSIVO CARICO/SCARICO
-  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1)
+  //--- GET NUMERO PROGRESSIVO
+  useEffect(() => {
+    const getNumeroProgressivo = async () => {
+      const progressivoSnapshot = await getDocs(collection(db, "contatore"))
+      progressivoSnapshot.docs.map((doc) => setRifProgressivo(doc.data().prog))
+    }
+    return () => getNumeroProgressivo()
+  }, [])
+  //--- GET CASSONI LIST
+  useEffect(() => {
+    const getCassoni = async () => {
+      const cassoniSnapshot = await getDocs(collection(db, "fir"))
+      const cassoniList = cassoniSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+      setCassoni(cassoniList)
+    }
+    return () => getCassoni()
+  }, [])
+  console.log(cassoni)
 
-  // PRENDI CASSONE SELEZIONATO
-  const showSelectedCer = (cer) => {
-    setSelectedCer(cersDb.filter((c) => c.cer === cer))
-    return getFilteredStateCarico(cer)
+  //--- GET CASSONE SELEZIONATO
+  const getCassoneSelezionato = async (id) => {
+    const cassoneSnapshot = await getDoc(doc(db, "fir", id))
+    if (cassoneSnapshot.exists()) {
+      return setCassone({ ...cassoneSnapshot.data(), id: id })
+    } else {
+      console.log("Cassone non presente nel Database")
+    }
   }
 
-  // SOMMA MC-TOTALI DEI CARICHI DEL CASSONE
+  //--- UPDATE CASSONE SELEZIONATE
+  const updateCassone = async (id) => {
+    const cassoneSnapshot = doc(db, "fir", id)
+    await updateDoc(cassoneSnapshot, {
+      carico: [
+        ...cassoneSnapshot.carico,
+        {
+          rif: rifProgressivo,
+          mc: mcInputCarico,
+          stato: false,
+        },
+      ],
+    })
+  }
+
+  // INCREMENTA RIF. PROGRESSIVO CARICO/SCARICO
+  /*   const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1) */
+
+  // PRENDI CASSONE SELEZIONATO
+  /* const showSelectedCer = (cer) => {
+    setSelectedCer(Cassoni.filter((c) => c.cer === cer))
+    return getFilteredStateCarico(cer)
+  }*/
+
+  /*   // SOMMA MC-TOTALI DEI CARICHI DEL CASSONE
   const sommaCarichi = (cer) => {
     let arr = [mcInputCarico]
-    cersDb.map((c) => {
+    Cassoni.map((c) => {
       if (c.cer === cer) {
         return c.carico.forEach((e) => e.stato === false && arr.push(e.mc))
       } else {
@@ -54,9 +102,9 @@ export const ContextProvider = (props) => {
   /***********************/
 
   // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
-  const updateDataSelectedCerCarico = (cer) => {
-    setCersDb(
-      cersDb.map((c) => {
+  /* const updateDataSelectedCerCarico = (cer) => {
+    setCassoni(
+      Cassoni.map((c) => {
         if (c.cer === cer) {
           return {
             ...c,
@@ -75,10 +123,10 @@ export const ContextProvider = (props) => {
         }
       })
     )
-  }
+  }*/
 
   // AGGIORNA LOG CARICO
-  const updateLogCarico = (cer) => {
+  /* const updateLogCarico = (cer) => {
     setLogs([
       ...logs,
       {
@@ -89,10 +137,10 @@ export const ContextProvider = (props) => {
         mcInputCarico,
       },
     ])
-  }
+  }*/
 
   // AGGIORNA TUTTI I DATI DEL CARICO
-  const updateCersCarico = (cer) => {
+  /*const updateCersCarico = (cer) => {
     if (
       mcInputCarico !== 0 &&
       window.confirm(
@@ -107,7 +155,7 @@ export const ContextProvider = (props) => {
     } else {
       alert("❌ Carico annullato!")
     }
-  }
+  } */
   /*^^^^^^^^^^^^^^^^^^^*/
   /** END FASE CARICO **/
   /*___________________*/
@@ -119,14 +167,14 @@ export const ContextProvider = (props) => {
   /************************/
 
   // GET ARRAY CARICHI NON ANCORA SCARICATI
-  const getFilteredStateCarico = (cer) => {
-    cersDb.map(
+  /*   const getFilteredStateCarico = (cer) => {
+    Cassoni.map(
       (c) =>
         c.cer === cer &&
         setFilteredState(c.carico.filter((elem) => elem.stato === false))
     )
-  }
-
+  } */
+  /* 
   // CHECKBOX ==> CAMBIA STATO CARICO/SCARICO
   const handleChange = (index) => {
     selectedCer.map((elem) =>
@@ -143,8 +191,8 @@ export const ContextProvider = (props) => {
 
   // AGGIORNA SCARICO ==> MC-TOTALI
   const updateDataSelectedCerScarico = (cer) => {
-    setCersDb(
-      cersDb.map((c) => {
+    setCassoni(
+      Cassoni.map((c) => {
         if (c.cer === cer) {
           return {
             ...c,
@@ -162,28 +210,32 @@ export const ContextProvider = (props) => {
     updateDataSelectedCerScarico(cer)
     updateMcTotaliSelectedCer(cer)
     incrementaRifProgressivo()
-  }
+  } */
   /*^^^^^^^^^^^^^^^^^^^^*/
   /** END FASE SCARICO **/
   /*____________________*/
 
-  // RENDER
+  //--- RENDER
   return (
     <ContextData.Provider
       value={{
         today,
         year,
-        cersDb,
-        selectedCer,
-        showSelectedCer,
+        cassoni,
+        cassone,
+        getCassoneSelezionato,
+        rifProgressivo,
         mcInputCarico,
         setMcInputCarico,
-        rifProgressivo,
+        updateCassone,
+        /*selectedCer,
+        showSelectedCer,
+     
         updateCersCarico,
         logs,
-        filteredState,
+           filteredState,
         handleChange,
-        updateCersScarico,
+        updateCersScarico, */
       }}
     >
       {props.children}

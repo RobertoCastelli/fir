@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+/* import React, { useContext } from "react"
 // CONTEXT
 import { ContextData } from "../context"
 
@@ -25,3 +25,4 @@ export const FilteredStateCarico = () => {
     </div>
   )
 }
+ */

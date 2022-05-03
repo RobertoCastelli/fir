@@ -1,40 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content";
+import { Content } from "./Content"
 // ICONS
-import { BsMinecartLoaded } from "react-icons/bs";
-import { FiDownload } from "react-icons/fi";
+import { BsMinecartLoaded } from "react-icons/bs"
+import { FiDownload } from "react-icons/fi"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Carico = () => {
   const {
-    selectedCer,
+    year,
+    cassone,
+    rifProgressivo,
     mcInputCarico,
     setMcInputCarico,
-    rifProgressivo,
-    year,
-    updateCersCarico,
-  } = useContext(ContextData);
+    updateCassone,
+  } = useContext(ContextData)
 
   return (
     <>
-      {selectedCer[0] ? (
-        <div
-          className="wrapper-carico"
-          style={{ color: selectedCer[0].colore }}
-        >
+      {cassone.cer ? (
+        <div className="wrapper-carico" style={{ color: cassone.colore }}>
           <div className="title-carico">CARICO</div>
-          <div className="cer-carico">CER {selectedCer[0].cer}</div>
-          <div className="descrizione-carico">{selectedCer[0].descrizione}</div>
+          <div className="cer-carico">CER {cassone.cer}</div>
+          <div className="descrizione-carico">{cassone.descrizione}</div>
           <div className="rif-carico">
             Rif. {rifProgressivo}/{year}
           </div>
           <div className="mc-carico">
-            {selectedCer[0].mcTotali} / 36 <BsMinecartLoaded />
+            {cassone.mcTotali} / 36 <BsMinecartLoaded />
           </div>
           <div className="wrapper-input-carico">
             <input
+              required
               className="input-carico"
               min="0"
               name="mc"
@@ -51,7 +49,7 @@ export const Carico = () => {
           </div>
           <button
             className="btn-carico-carico"
-            onClick={() => updateCersCarico(selectedCer[0].cer)}
+            onClick={() => updateCassone(cassone.id)}
           >
             <FiDownload size={20} />
           </button>
@@ -60,5 +58,5 @@ export const Carico = () => {
         <Content />
       )}
     </>
-  );
-};
+  )
+}

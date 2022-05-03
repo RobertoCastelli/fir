@@ -1,4 +1,4 @@
-export let cers = [
+/* export let cers = [
   {
     cer: 150106,
     descrizione: "rifiuti misti",
@@ -42,3 +42,4 @@ export let cers = [
     carico: [],
   },
 ]
+ */

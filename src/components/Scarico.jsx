@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+/* import React, { useContext } from "react"
 // COMPONENTS
 import { Content } from "./Content"
 import { FilteredStateCarico } from "./FilteredStateCarico"
@@ -45,3 +45,4 @@ export const Scarico = () => {
     </>
   )
 }
+ */

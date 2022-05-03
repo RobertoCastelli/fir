@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+/* import React, { useContext } from "react"
 // COMPONENTS
 import { Content } from "./Content"
 // CONTEXT
@@ -33,3 +33,4 @@ export const Log = () => {
     </>
   )
 }
+ */
