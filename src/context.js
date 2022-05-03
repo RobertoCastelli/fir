@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 
 //--- FIREBASE
 import { db } from "./firebase"
-import { doc, getDocs, getDoc, updateDoc, collection } from "firebase/firestore"
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  increment,
+  onSnapshot,
+} from "firebase/firestore"
 //--- CONTEXT
 export const ContextData = React.createContext()
 
@@ -10,8 +17,8 @@ export const ContextProvider = (props) => {
   //--- STATES
   const [cassoni, setCassoni] = useState([])
   const [cassone, setCassone] = useState([])
-  const [rifProgressivo, setRifProgressivo] = useState(0)
   const [mcInputCarico, setMcInputCarico] = useState(0)
+  const [rifProgressivo, setRifProgressivo] = useState(0)
   /*   const [logs, setLogs] = useState([]) */
   /*   const [filteredState, setFilteredState] = useState([]) */
 
@@ -22,52 +29,98 @@ export const ContextProvider = (props) => {
     .toString()
     .slice(-2)
 
-  //--- GET NUMERO PROGRESSIVO
-  useEffect(() => {
-    const getNumeroProgressivo = async () => {
-      const progressivoSnapshot = await getDocs(collection(db, "contatore"))
-      progressivoSnapshot.docs.map((doc) => setRifProgressivo(doc.data().prog))
-    }
-    return () => getNumeroProgressivo()
-  }, [])
-  //--- GET CASSONI LIST
-  useEffect(() => {
-    const getCassoni = async () => {
-      const cassoniSnapshot = await getDocs(collection(db, "fir"))
-      const cassoniList = cassoniSnapshot.docs.map((doc) => ({
+  //--- FIREBASE VARIABLES
+  const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
+  const collRefFir = collection(db, "fir")
+
+  //--- UPDATE NUMERO PROGRESSIVO + 1
+  const updateNumeroProgressivo = async () => {
+    await updateDoc(docRefContatore, {
+      prog: increment(1),
+    })
+  }
+
+  //--- SHOW NUMERO PROGRESSIVO
+  onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog))
+
+  const sommaCaricoCassone = (id) => {
+    let container = [mcInputCarico]
+    cassoni.map((cassone) => {
+      if (cassone.id === id) {
+        return cassone.carico.forEach(
+          (carico) => carico.stato === false && container.push(carico.mc)
+        )
+      } else {
+        return cassone
+      }
+    })
+    return container.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+  }
+
+  //--- SHOW CASSONI
+  onSnapshot(collRefFir, (snapshot) => {
+    let cassoneList = []
+    snapshot.docs.forEach((doc) => {
+      cassoneList.push({
         ...doc.data(),
         id: doc.id,
-      }))
-      setCassoni(cassoniList)
-    }
-    return () => getCassoni()
-  }, [])
-  console.log(cassoni)
+      })
+      return setCassoni(cassoneList)
+    })
+  })
 
-  //--- GET CASSONE SELEZIONATO
+  //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
     const cassoneSnapshot = await getDoc(doc(db, "fir", id))
     if (cassoneSnapshot.exists()) {
-      return setCassone({ ...cassoneSnapshot.data(), id: id })
+      setCassone({
+        ...cassoneSnapshot.data(),
+        id: id,
+      })
     } else {
-      console.log("Cassone non presente nel Database")
+      console.log("Cassone non presente nel database")
     }
   }
 
-  //--- UPDATE CASSONE SELEZIONATE
-  const updateCassone = async (id) => {
-    const cassoneSnapshot = doc(db, "fir", id)
-    await updateDoc(cassoneSnapshot, {
+  //--- UPDATE DATI DEL CASSONE SELEZIONATO {rif, mc, stato}
+  const updateMcRifStateCassone = async (id) => {
+    const cassoneRef = doc(db, "fir", id)
+    await updateDoc(cassoneRef, {
       carico: [
-        ...cassoneSnapshot.carico,
-        {
-          rif: rifProgressivo,
-          mc: mcInputCarico,
-          stato: false,
-        },
+        ...cassone.carico,
+        { rif: rifProgressivo, mc: mcInputCarico, stato: false },
       ],
     })
   }
+
+  //--- UPDATE CASSONE
+  //--- UPDATE NUMERO PROGRESSIVO
+  //--- RESET MC INPUT
+  const updateCassone = (id) => {
+    updateMcRifStateCassone(id)
+    updateNumeroProgressivo()
+    setMcInputCarico(0)
+    debugger
+  }
+
+  /* 
+  //--- GET CASSONI LIST
+  const getCassoni = async () => {
+    const cassoniSnapshot = await getDocs(collection(db, "fir"))
+    const cassoniList = cassoniSnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }))
+    setCassoni(cassoniList)
+  }
+  getCassoni()
+
+
+
+
+
+ */
+  //--- UPDATE CASSONE SELEZIONATE
 
   // INCREMENTA RIF. PROGRESSIVO CARICO/SCARICO
   /*   const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1) */
@@ -221,13 +274,15 @@ export const ContextProvider = (props) => {
       value={{
         today,
         year,
-        cassoni,
-        cassone,
-        getCassoneSelezionato,
         rifProgressivo,
+        cassone,
+        cassoni,
+        getCassoneSelezionato,
+        updateCassone,
         mcInputCarico,
         setMcInputCarico,
-        updateCassone,
+        /*  
+      , */
         /*selectedCer,
         showSelectedCer,
      
