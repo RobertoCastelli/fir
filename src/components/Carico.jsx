@@ -40,8 +40,8 @@ export const Carico = () => {
               value={mcInputCarico}
               onChange={(e) =>
                 e.target.value < 0
-                  ? setMcInputCarico(e.target.value * -1)
-                  : setMcInputCarico(e.target.value)
+                  ? setMcInputCarico(parseInt(e.target.value * -1))
+                  : setMcInputCarico(parseInt(e.target.value))
               }
               onFocus={(e) => (e.target.value = "")}
             />

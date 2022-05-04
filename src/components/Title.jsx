@@ -15,8 +15,9 @@ export const Title = () => {
     <div className="wrapper-title">
       <img className="img-title" src={bg} alt="bg-img" />
       <div className="second-title">
-        <h1 className="title-title">F.I.R. {rifProgressivo}</h1>
-        GESTIONE CARICO E SCARICO MATERIALE DI RISULTA
+        <h1 className="title-title">F.I.R. </h1>
+        <div>GESTIONE CARICO E SCARICO MATERIALE DI RISULTA</div>
+        <div>rif. n°{rifProgressivo}</div>
       </div>
       <Link to="/log">
         <button className="info-title">

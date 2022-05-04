@@ -22,16 +22,16 @@ export const ContextProvider = (props) => {
   /*   const [logs, setLogs] = useState([]) */
   /*   const [filteredState, setFilteredState] = useState([]) */
 
+  //--- FIREBASE VARIABLES
+  const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
+  const collRefFir = collection(db, "fir")
+
   //--- GET DATE && YEAR
   const today = new Date().toLocaleDateString().slice(0, 4)
   const year = new Date()
     .getFullYear()
     .toString()
     .slice(-2)
-
-  //--- FIREBASE VARIABLES
-  const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
-  const collRefFir = collection(db, "fir")
 
   //--- UPDATE NUMERO PROGRESSIVO + 1
   const updateNumeroProgressivo = async () => {
@@ -43,27 +43,13 @@ export const ContextProvider = (props) => {
   //--- SHOW NUMERO PROGRESSIVO
   onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog))
 
-  const sommaCaricoCassone = (id) => {
-    let container = [mcInputCarico]
-    cassoni.map((cassone) => {
-      if (cassone.id === id) {
-        return cassone.carico.forEach(
-          (carico) => carico.stato === false && container.push(carico.mc)
-        )
-      } else {
-        return cassone
-      }
-    })
-    return container.reduce((a, b) => parseInt(a) + parseInt(b), 0)
-  }
-
   //--- SHOW CASSONI
   onSnapshot(collRefFir, (snapshot) => {
     let cassoneList = []
-    snapshot.docs.forEach((doc) => {
+    snapshot.forEach((cassone) => {
       cassoneList.push({
-        ...doc.data(),
-        id: doc.id,
+        ...cassone.data(),
+        id: cassone.id,
       })
       return setCassoni(cassoneList)
     })
@@ -82,10 +68,11 @@ export const ContextProvider = (props) => {
     }
   }
 
-  //--- UPDATE DATI DEL CASSONE SELEZIONATO {rif, mc, stato}
-  const updateMcRifStateCassone = async (id) => {
+  //--- UPDATE DATI CASSONE SELEZIONATO {rif, mc, stato}
+  const updateRifMcStateCassone = async (id) => {
     const cassoneRef = doc(db, "fir", id)
     await updateDoc(cassoneRef, {
+      mcTotali: cassone.mcTotali + mcInputCarico,
       carico: [
         ...cassone.carico,
         { rif: rifProgressivo, mc: mcInputCarico, stato: false },
@@ -93,125 +80,19 @@ export const ContextProvider = (props) => {
     })
   }
 
-  //--- UPDATE CASSONE
+  //---****************---/
+  //--- FASE DI CARICO ---/
+  //---****************---/
+
+  //--- UPDATE CASSONE SELEZIONATO
   //--- UPDATE NUMERO PROGRESSIVO
   //--- RESET MC INPUT
+  //--- TORNA ALLA HOME PAGE
   const updateCassone = (id) => {
-    updateMcRifStateCassone(id)
+    updateRifMcStateCassone(id)
     updateNumeroProgressivo()
     setMcInputCarico(0)
-    debugger
   }
-
-  /* 
-  //--- GET CASSONI LIST
-  const getCassoni = async () => {
-    const cassoniSnapshot = await getDocs(collection(db, "fir"))
-    const cassoniList = cassoniSnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }))
-    setCassoni(cassoniList)
-  }
-  getCassoni()
-
-
-
-
-
- */
-  //--- UPDATE CASSONE SELEZIONATE
-
-  // INCREMENTA RIF. PROGRESSIVO CARICO/SCARICO
-  /*   const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1) */
-
-  // PRENDI CASSONE SELEZIONATO
-  /* const showSelectedCer = (cer) => {
-    setSelectedCer(Cassoni.filter((c) => c.cer === cer))
-    return getFilteredStateCarico(cer)
-  }*/
-
-  /*   // SOMMA MC-TOTALI DEI CARICHI DEL CASSONE
-  const sommaCarichi = (cer) => {
-    let arr = [mcInputCarico]
-    Cassoni.map((c) => {
-      if (c.cer === cer) {
-        return c.carico.forEach((e) => e.stato === false && arr.push(e.mc))
-      } else {
-        return c
-      }
-    })
-    return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0)
-  }
-
-  // AGGIORNA MC-TOTALI NEL CASSONE SELEZIONATO
-  const updateMcTotaliSelectedCer = (cer) =>
-    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }])
-
-  /***********************/
-  /***********************/
-  /** START FASE CARICO **/
-  /***********************/
-  /***********************/
-
-  // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
-  /* const updateDataSelectedCerCarico = (cer) => {
-    setCassoni(
-      Cassoni.map((c) => {
-        if (c.cer === cer) {
-          return {
-            ...c,
-            mcTotali: sommaCarichi(cer),
-            carico: [
-              ...c.carico,
-              {
-                rif: rifProgressivo,
-                mc: mcInputCarico,
-                stato: false,
-              },
-            ],
-          }
-        } else {
-          return c
-        }
-      })
-    )
-  }*/
-
-  // AGGIORNA LOG CARICO
-  /* const updateLogCarico = (cer) => {
-    setLogs([
-      ...logs,
-      {
-        today,
-        cer,
-        year,
-        rifProgressivo,
-        mcInputCarico,
-      },
-    ])
-  }*/
-
-  // AGGIORNA TUTTI I DATI DEL CARICO
-  /*const updateCersCarico = (cer) => {
-    if (
-      mcInputCarico !== 0 &&
-      window.confirm(
-        `⚠️ CARICO CER ${selectedCer[0].cer} - rif.${rifProgressivo}/${year} ➟ ${mcInputCarico} mc?`
-      )
-    ) {
-      updateDataSelectedCerCarico(cer)
-      updateLogCarico(cer)
-      updateMcTotaliSelectedCer(cer)
-      incrementaRifProgressivo()
-      setMcInputCarico(0)
-    } else {
-      alert("❌ Carico annullato!")
-    }
-  } */
-  /*^^^^^^^^^^^^^^^^^^^*/
-  /** END FASE CARICO **/
-  /*___________________*/
 
   /************************/
   /************************/
