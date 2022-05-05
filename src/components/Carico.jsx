@@ -47,6 +47,7 @@ export const Carico = () => {
             />
             <label htmlFor="mc"> mc</label>
           </div>
+
           <button
             className="btn-carico-carico"
             onClick={() => updateCassone(cassone.id)}

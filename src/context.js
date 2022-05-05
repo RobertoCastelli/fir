@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 //--- FIREBASE
 import { db } from "./firebase"
@@ -10,6 +10,7 @@ import {
   increment,
   onSnapshot,
 } from "firebase/firestore"
+
 //--- CONTEXT
 export const ContextData = React.createContext()
 
@@ -19,8 +20,6 @@ export const ContextProvider = (props) => {
   const [cassone, setCassone] = useState([])
   const [mcInputCarico, setMcInputCarico] = useState(0)
   const [rifProgressivo, setRifProgressivo] = useState(0)
-  /*   const [logs, setLogs] = useState([]) */
-  /*   const [filteredState, setFilteredState] = useState([]) */
 
   //--- FIREBASE VARIABLES
   const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
@@ -46,14 +45,33 @@ export const ContextProvider = (props) => {
   //--- SHOW CASSONI
   onSnapshot(collRefFir, (snapshot) => {
     let cassoneList = []
-    snapshot.forEach((cassone) => {
+    snapshot.docs.forEach((doc) => {
       cassoneList.push({
-        ...cassone.data(),
-        id: cassone.id,
+        ...doc.data(),
+        id: doc.id,
       })
-      return setCassoni(cassoneList)
+      setCassoni(cassoneList)
     })
   })
+
+  useEffect(() => {
+    const somme = () => {
+      cassoni.map((cassone) => {
+        let arr = []
+        return cassone.carico.forEach((carico) => {
+          arr.push(carico.mc)
+          let arrsomma = arr.reduce((a, b) => a + b, 0)
+          const upcas = doc(db, "fir", cassone.id)
+          updateDoc(upcas, {
+            mcTotali: arrsomma,
+          })
+        })
+      })
+    }
+    return () => {
+      somme()
+    }
+  }, [rifProgressivo])
 
   //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
@@ -72,7 +90,6 @@ export const ContextProvider = (props) => {
   const updateRifMcStateCassone = async (id) => {
     const cassoneRef = doc(db, "fir", id)
     await updateDoc(cassoneRef, {
-      mcTotali: cassone.mcTotali + mcInputCarico,
       carico: [
         ...cassone.carico,
         { rif: rifProgressivo, mc: mcInputCarico, stato: false },
@@ -100,51 +117,6 @@ export const ContextProvider = (props) => {
   /************************/
   /************************/
 
-  // GET ARRAY CARICHI NON ANCORA SCARICATI
-  /*   const getFilteredStateCarico = (cer) => {
-    Cassoni.map(
-      (c) =>
-        c.cer === cer &&
-        setFilteredState(c.carico.filter((elem) => elem.stato === false))
-    )
-  } */
-  /* 
-  // CHECKBOX ==> CAMBIA STATO CARICO/SCARICO
-  const handleChange = (index) => {
-    selectedCer.map((elem) =>
-      elem.carico.forEach((e, i) => {
-        if (i === index) {
-          return (e.stato = !e.stato)
-        } else {
-          return e
-        }
-      })
-    )
-    console.log(selectedCer[0].carico)
-  }
-
-  // AGGIORNA SCARICO ==> MC-TOTALI
-  const updateDataSelectedCerScarico = (cer) => {
-    setCassoni(
-      Cassoni.map((c) => {
-        if (c.cer === cer) {
-          return {
-            ...c,
-            mcTotali: sommaCarichi(cer),
-          }
-        } else {
-          return c
-        }
-      })
-    )
-  }
-
-  // AGGIORNA TUTTI I DATI DELLO SCARICO
-  const updateCersScarico = (cer) => {
-    updateDataSelectedCerScarico(cer)
-    updateMcTotaliSelectedCer(cer)
-    incrementaRifProgressivo()
-  } */
   /*^^^^^^^^^^^^^^^^^^^^*/
   /** END FASE SCARICO **/
   /*____________________*/

@@ -35,9 +35,3 @@ function App() {
 }
 
 export default App
-
-//********************
-/* TODO: 
-/* add button new CER  
-/* add search on logs
-**********************/
