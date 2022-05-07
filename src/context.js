@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 
 //--- FIREBASE
 import { db } from "./firebase"
@@ -32,6 +32,9 @@ export const ContextProvider = (props) => {
     .toString()
     .slice(-2)
 
+  //--- SHOW NUMERO PROGRESSIVO
+  onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog))
+
   //--- UPDATE NUMERO PROGRESSIVO + 1
   const updateNumeroProgressivo = async () => {
     await updateDoc(docRefContatore, {
@@ -39,39 +42,18 @@ export const ContextProvider = (props) => {
     })
   }
 
-  //--- SHOW NUMERO PROGRESSIVO
-  onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog))
-
-  //--- SHOW CASSONI
+  //--- SHOW TUTTI I CASSONI
   onSnapshot(collRefFir, (snapshot) => {
     let cassoneList = []
     snapshot.docs.forEach((doc) => {
       cassoneList.push({
         ...doc.data(),
         id: doc.id,
+        mcTotali: sommaCarichiNelCassone(doc.id),
       })
       setCassoni(cassoneList)
     })
   })
-
-  useEffect(() => {
-    const somme = () => {
-      cassoni.map((cassone) => {
-        let arr = []
-        return cassone.carico.forEach((carico) => {
-          arr.push(carico.mc)
-          let arrsomma = arr.reduce((a, b) => a + b, 0)
-          const upcas = doc(db, "fir", cassone.id)
-          updateDoc(upcas, {
-            mcTotali: arrsomma,
-          })
-        })
-      })
-    }
-    return () => {
-      somme()
-    }
-  }, [rifProgressivo])
 
   //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
@@ -80,10 +62,26 @@ export const ContextProvider = (props) => {
       setCassone({
         ...cassoneSnapshot.data(),
         id: id,
+        mcTotali: sommaCarichiNelCassone(id),
       })
     } else {
       console.log("Cassone non presente nel database")
     }
+  }
+
+  //--- SOMMA CARICHI NEL CASSONE
+  const sommaCarichiNelCassone = (id) => {
+    let contenitoreCarichi = []
+    cassoni.map((cassone) => {
+      return cassone.carico.forEach((carico) => {
+        if (cassone.id === id) {
+          contenitoreCarichi.push(carico.mc)
+        } else {
+          return cassone
+        }
+      })
+    })
+    return contenitoreCarichi.reduce((a, b) => a + b, 0)
   }
 
   //--- UPDATE DATI CASSONE SELEZIONATO {rif, mc, stato}
@@ -97,25 +95,35 @@ export const ContextProvider = (props) => {
     })
   }
 
-  //---****************---/
-  //--- FASE DI CARICO ---/
-  //---****************---/
+  /***********************/
+  /***********************/
+  /** START FASE CARICO **/
+  /***********************/
+  /***********************/
 
-  //--- UPDATE CASSONE SELEZIONATO
-  //--- UPDATE NUMERO PROGRESSIVO
-  //--- RESET MC INPUT
-  //--- TORNA ALLA HOME PAGE
+  //1.--- UPDATE CASSONE SELEZIONATO
+  //2.--- UPDATE NUMERO PROGRESSIVO
+  //3.--- RESET MC INPUT
+  //4.---TODO: UPDATE LOG
+  //5.---TODO: TORNA ALLA HOME PAGE
   const updateCassone = (id) => {
     updateRifMcStateCassone(id)
     updateNumeroProgressivo()
     setMcInputCarico(0)
   }
 
+  //^^^^^^^^^^^^^^^^^//
+  // END FASE CARICO //
+  //_________________//
+
   /************************/
   /************************/
   /** START FASE SCARICO **/
   /************************/
   /************************/
+
+  let elencoCarichi =
+    cassone && cassone.filter((doc) => doc.carico.stato === false)
 
   /*^^^^^^^^^^^^^^^^^^^^*/
   /** END FASE SCARICO **/
@@ -134,6 +142,7 @@ export const ContextProvider = (props) => {
         updateCassone,
         mcInputCarico,
         setMcInputCarico,
+        elencoCarichi,
         /*  
       , */
         /*selectedCer,
