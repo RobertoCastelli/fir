@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 // COMPONENTS
 import { Content } from "./Content"
-import { FilteredStateCarico } from "./FilteredStateCarico"
+import { ElencoCarichi } from "./ElencoCarichi"
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs"
 import { FiUpload } from "react-icons/fi"
@@ -9,11 +9,13 @@ import { FiUpload } from "react-icons/fi"
 import { ContextData } from "../context"
 
 export const Scarico = () => {
-  const { cassone, rifProgressivo } = useContext(ContextData)
+  const { cassone, rifProgressivo, updateCassoneScarico } = useContext(
+    ContextData
+  )
 
   return (
     <>
-      {cassone ? (
+      {cassone.cer ? (
         <div className="wrapper-scarico" style={{ color: cassone.colore }}>
           <div className="title-scarico">SCARICO</div>
           <div className="cer-scarico">CER {cassone.cer}</div>
@@ -23,11 +25,11 @@ export const Scarico = () => {
             {cassone.mcTotali} / 36 <BsMinecartLoaded />
           </div>
           <div className="filtered-scarico">
-            <FilteredStateCarico />
+            <ElencoCarichi />
           </div>
           <button
             className="carico-scarico"
-            /*      onClick={() => updateCersScarico(cassone.cer)} */
+            onClick={() => updateCassoneScarico(cassone.cer)}
           >
             <FiUpload size={20} />
           </button>

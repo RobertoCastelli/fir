@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 //--- FIREBASE
 import { db } from "./firebase"
@@ -20,6 +20,7 @@ export const ContextProvider = (props) => {
   const [cassone, setCassone] = useState([])
   const [mcInputCarico, setMcInputCarico] = useState(0)
   const [rifProgressivo, setRifProgressivo] = useState(0)
+  const [checkedStateCarico, setCheckedStateCarico] = useState([])
 
   //--- FIREBASE VARIABLES
   const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
@@ -106,7 +107,7 @@ export const ContextProvider = (props) => {
   //3.--- RESET MC INPUT
   //4.---TODO: UPDATE LOG
   //5.---TODO: TORNA ALLA HOME PAGE
-  const updateCassone = (id) => {
+  const updateCassoneCarico = (id) => {
     updateRifMcStateCassone(id)
     updateNumeroProgressivo()
     setMcInputCarico(0)
@@ -122,12 +123,23 @@ export const ContextProvider = (props) => {
   /************************/
   /************************/
 
-  let elencoCarichi =
-    cassone && cassone.filter((doc) => doc.carico.stato === false)
+  useEffect(() => {
+    Array.isArray(cassone.carico) &&
+      setCheckedStateCarico(new Array(cassone.carico.length).fill(false))
+  }, [cassone])
 
-  /*^^^^^^^^^^^^^^^^^^^^*/
-  /** END FASE SCARICO **/
-  /*____________________*/
+  const handleCheckbox = (position) => {
+    setCheckedStateCarico(
+      checkedStateCarico.map((item, i) => (position === i ? !item : item))
+    )
+    console.log(checkedStateCarico)
+  }
+
+  const updateCassoneScarico = () => {}
+
+  //^^^^^^^^^^^^^^^^^^//
+  // END FASE SCARICO //
+  //__________________//
 
   //--- RENDER
   return (
@@ -135,14 +147,16 @@ export const ContextProvider = (props) => {
       value={{
         today,
         year,
-        rifProgressivo,
         cassone,
         cassoni,
-        getCassoneSelezionato,
-        updateCassone,
         mcInputCarico,
+        rifProgressivo,
+        getCassoneSelezionato,
         setMcInputCarico,
-        elencoCarichi,
+        updateCassoneCarico,
+        updateCassoneScarico,
+        handleCheckbox,
+
         /*  
       , */
         /*selectedCer,

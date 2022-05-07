@@ -14,7 +14,7 @@ export const Carico = () => {
     rifProgressivo,
     mcInputCarico,
     setMcInputCarico,
-    updateCassone,
+    updateCassoneCarico,
   } = useContext(ContextData)
 
   return (
@@ -50,7 +50,7 @@ export const Carico = () => {
 
           <button
             className="btn-carico-carico"
-            onClick={() => updateCassone(cassone.id)}
+            onClick={() => updateCassoneCarico(cassone.id)}
           >
             <FiDownload size={20} />
           </button>
