@@ -35,3 +35,5 @@ function App() {
 }
 
 export default App
+
+//TODO: conferma + spinner

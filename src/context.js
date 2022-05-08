@@ -9,8 +9,6 @@ import {
   collection,
   increment,
   onSnapshot,
-  arrayRemove,
-  deleteField,
 } from "firebase/firestore"
 
 //--- CONTEXT
@@ -110,9 +108,18 @@ export const ContextProvider = (props) => {
   //4.---TODO: UPDATE LOG
   //5.---TODO: TORNA ALLA HOME PAGE
   const updateCassoneCarico = (id) => {
-    updateRifMcStateCassone(id)
-    updateNumeroProgressivo()
-    setMcInputCarico(0)
+    if (
+      mcInputCarico !== 0 &&
+      window.confirm(
+        `Premi OK per confermare carico ${mcInputCarico} mc, rif. ${rifProgressivo}`
+      )
+    ) {
+      updateRifMcStateCassone(id)
+      updateNumeroProgressivo()
+      setMcInputCarico(0)
+    } else {
+      alert("Carico annullato")
+    }
   }
 
   //^^^^^^^^^^^^^^^^^//
@@ -125,34 +132,42 @@ export const ContextProvider = (props) => {
   /************************/
   /************************/
 
-  //--- GET NUMERO CARICHI false NEL CASSONE COPIA
+  //--- GET NUMERO CARICHI (stato false) IN UN CASSONE COPIA
   useEffect(() => {
     Array.isArray(cassone.carico) &&
       setCheckedStateCarico(new Array(cassone.carico.length).fill(false))
   }, [cassone])
 
-  //--- TOGGLE CARICHI true/false NEL CASSONE COPIA
+  //--- TOGGLE CARICHI (stato true/false) NEL CASSONE COPIA
   const handleCheckbox = (position) => {
     setCheckedStateCarico(
       checkedStateCarico.map((item, i) => (position === i ? !item : item))
     )
   }
 
-  //--- UPDATE STATO DEI CARICHI SCARICATI (true)
-  const updateCassoneScarico = async (id) => {
-    checkedStateCarico.map((item, i) => {
-      if (item === true) {
-        console.log(cassone)
-        return (cassone.carico[i].stato = true)
-      } else {
-        return item
-      }
-    })
+  //--- SOSTITUISCI CARICO ORIGINALI CON COPIA CASSONE
+  const updateCheckeState = async (id) => {
+    checkedStateCarico.map((item, i) =>
+      item === true ? (cassone.carico[i].stato = true) : item
+    )
+    let cassoneScaricato = cassone.carico.filter((item) => item.stato === false)
     const cassoneRef = doc(db, "fir", id)
     await updateDoc(cassoneRef, {
-      carico: arrayRemove("mc"),
+      carico: cassoneScaricato,
     })
-    return console.log(checkedStateCarico)
+  }
+
+  //--- UPDATE SCARICO NEL CASSONE
+  //--- UPDATE NUMERO PROGRESSIVO
+  //3.---TODO: UPDATE LOG
+  //4.---TODO: TORNA ALLA HOME PAGE
+  const updateCassoneScarico = async (id) => {
+    if (window.confirm(`Premi OK per confermare lo scarico`)) {
+      updateCheckeState(id)
+      updateNumeroProgressivo()
+    } else {
+      alert("Scarico annullato")
+    }
   }
 
   //^^^^^^^^^^^^^^^^^^//
