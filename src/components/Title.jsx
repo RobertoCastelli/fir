@@ -18,7 +18,7 @@ export const Title = () => {
         <h1 className="title-title">F.I.R. </h1>
         <div>GESTIONE CARICO E SCARICO MATERIALE DI RISULTA</div>
         <div className="rif-title">
-          rif. n°{rifProgressivo}/{year}
+          rif. n° {rifProgressivo}/{year}
         </div>
       </div>
       <Link to="/log">
