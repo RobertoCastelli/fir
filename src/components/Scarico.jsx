@@ -29,7 +29,7 @@ export const Scarico = () => {
           </div>
           <button
             className="carico-scarico"
-            onClick={() => updateCassoneScarico(cassone.cer)}
+            onClick={() => updateCassoneScarico(cassone.id)}
           >
             <FiUpload size={20} />
           </button>

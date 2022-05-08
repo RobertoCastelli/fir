@@ -9,6 +9,8 @@ import {
   collection,
   increment,
   onSnapshot,
+  arrayRemove,
+  deleteField,
 } from "firebase/firestore"
 
 //--- CONTEXT
@@ -32,6 +34,12 @@ export const ContextProvider = (props) => {
     .getFullYear()
     .toString()
     .slice(-2)
+
+  /***********************/
+  /***********************/
+  /** START FASE CARICO **/
+  /***********************/
+  /***********************/
 
   //--- SHOW NUMERO PROGRESSIVO
   onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog))
@@ -96,12 +104,6 @@ export const ContextProvider = (props) => {
     })
   }
 
-  /***********************/
-  /***********************/
-  /** START FASE CARICO **/
-  /***********************/
-  /***********************/
-
   //1.--- UPDATE CASSONE SELEZIONATO
   //2.--- UPDATE NUMERO PROGRESSIVO
   //3.--- RESET MC INPUT
@@ -123,19 +125,35 @@ export const ContextProvider = (props) => {
   /************************/
   /************************/
 
+  //--- GET NUMERO CARICHI false NEL CASSONE COPIA
   useEffect(() => {
     Array.isArray(cassone.carico) &&
       setCheckedStateCarico(new Array(cassone.carico.length).fill(false))
   }, [cassone])
 
+  //--- TOGGLE CARICHI true/false NEL CASSONE COPIA
   const handleCheckbox = (position) => {
     setCheckedStateCarico(
       checkedStateCarico.map((item, i) => (position === i ? !item : item))
     )
-    console.log(checkedStateCarico)
   }
 
-  const updateCassoneScarico = () => {}
+  //--- UPDATE STATO DEI CARICHI SCARICATI (true)
+  const updateCassoneScarico = async (id) => {
+    checkedStateCarico.map((item, i) => {
+      if (item === true) {
+        console.log(cassone)
+        return (cassone.carico[i].stato = true)
+      } else {
+        return item
+      }
+    })
+    const cassoneRef = doc(db, "fir", id)
+    await updateDoc(cassoneRef, {
+      carico: arrayRemove("mc"),
+    })
+    return console.log(checkedStateCarico)
+  }
 
   //^^^^^^^^^^^^^^^^^^//
   // END FASE SCARICO //
@@ -156,17 +174,6 @@ export const ContextProvider = (props) => {
         updateCassoneCarico,
         updateCassoneScarico,
         handleCheckbox,
-
-        /*  
-      , */
-        /*selectedCer,
-        showSelectedCer,
-     
-        updateCersCarico,
-        logs,
-           filteredState,
-        handleChange,
-        updateCersScarico, */
       }}
     >
       {props.children}
