@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
-
+//--- NAVIGATE
+import { useNavigate } from "react-router-dom"
 //--- FIREBASE
 import { db } from "./firebase"
 import {
@@ -21,6 +22,7 @@ export const ContextProvider = (props) => {
   const [mcInputCarico, setMcInputCarico] = useState(0)
   const [rifProgressivo, setRifProgressivo] = useState(0)
   const [checkedStateCarico, setCheckedStateCarico] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   //--- FIREBASE VARIABLES
   const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
@@ -32,6 +34,8 @@ export const ContextProvider = (props) => {
     .getFullYear()
     .toString()
     .slice(-2)
+
+  const navigate = useNavigate()
 
   /***********************/
   /***********************/
@@ -64,6 +68,7 @@ export const ContextProvider = (props) => {
 
   //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
+    setIsLoading(true)
     const cassoneSnapshot = await getDoc(doc(db, "fir", id))
     if (cassoneSnapshot.exists()) {
       setCassone({
@@ -71,6 +76,7 @@ export const ContextProvider = (props) => {
         id: id,
         mcTotali: sommaCarichiNelCassone(id),
       })
+      setIsLoading(false)
     } else {
       console.log("Cassone non presente nel database")
     }
@@ -93,6 +99,7 @@ export const ContextProvider = (props) => {
 
   //--- UPDATE DATI CASSONE SELEZIONATO {rif, mc, stato}
   const updateRifMcStateCassone = async (id) => {
+    setIsLoading(true)
     const cassoneRef = doc(db, "fir", id)
     await updateDoc(cassoneRef, {
       carico: [
@@ -100,13 +107,14 @@ export const ContextProvider = (props) => {
         { rif: rifProgressivo, mc: mcInputCarico, stato: false },
       ],
     })
+    setIsLoading(false)
   }
 
   //1.--- UPDATE CASSONE SELEZIONATO
   //2.--- UPDATE NUMERO PROGRESSIVO
   //3.--- RESET MC INPUT
   //4.---TODO: UPDATE LOG
-  //5.---TODO: TORNA ALLA HOME PAGE
+
   const updateCassoneCarico = (id) => {
     if (
       mcInputCarico !== 0 &&
@@ -117,6 +125,10 @@ export const ContextProvider = (props) => {
       updateRifMcStateCassone(id)
       updateNumeroProgressivo()
       setMcInputCarico(0)
+      setTimeout(() => {
+        navigate("/")
+        window.location.reload(false)
+      }, 1000)
     } else {
       alert("Carico annullato")
     }
@@ -147,6 +159,7 @@ export const ContextProvider = (props) => {
 
   //--- SOSTITUISCI CARICO ORIGINALI CON COPIA CASSONE
   const updateCheckeState = async (id) => {
+    setIsLoading(true)
     checkedStateCarico.map((item, i) =>
       item === true ? (cassone.carico[i].stato = true) : item
     )
@@ -155,16 +168,21 @@ export const ContextProvider = (props) => {
     await updateDoc(cassoneRef, {
       carico: cassoneScaricato,
     })
+    setIsLoading(false)
   }
 
-  //--- UPDATE SCARICO NEL CASSONE
-  //--- UPDATE NUMERO PROGRESSIVO
+  //1.--- UPDATE SCARICO NEL CASSONE
+  //2.--- UPDATE NUMERO PROGRESSIVO
   //3.---TODO: UPDATE LOG
-  //4.---TODO: TORNA ALLA HOME PAGE
+
   const updateCassoneScarico = async (id) => {
     if (window.confirm(`Premi OK per confermare lo scarico`)) {
       updateCheckeState(id)
       updateNumeroProgressivo()
+      setTimeout(() => {
+        navigate("/")
+        window.location.reload(false)
+      }, 1000)
     } else {
       alert("Scarico annullato")
     }
@@ -189,6 +207,7 @@ export const ContextProvider = (props) => {
         updateCassoneCarico,
         updateCassoneScarico,
         handleCheckbox,
+        isLoading,
       }}
     >
       {props.children}

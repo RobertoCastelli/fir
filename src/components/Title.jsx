@@ -10,14 +10,16 @@ import bg from "../images/camion.png"
 import { ContextData } from "../context"
 
 export const Title = () => {
-  const { rifProgressivo } = useContext(ContextData)
+  const { rifProgressivo, year } = useContext(ContextData)
   return (
     <div className="wrapper-title">
       <img className="img-title" src={bg} alt="bg-img" />
       <div className="second-title">
         <h1 className="title-title">F.I.R. </h1>
         <div>GESTIONE CARICO E SCARICO MATERIALE DI RISULTA</div>
-        <div>rif. n°{rifProgressivo}</div>
+        <div className="rif-title">
+          rif. n°{rifProgressivo}/{year}
+        </div>
       </div>
       <Link to="/log">
         <button className="info-title">

@@ -64,9 +64,6 @@ button:active {
 .wrapper-title {
   text-align: center;
 }
-.second-title {
-  padding: 1rem;
-}
 .home-title {
   grid-area: home;
   margin: 1rem;
@@ -81,6 +78,13 @@ button:active {
 }
 .img-title {
   width: 300px;
+}
+.rif-title {
+  border: 1px solid var(--blue);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 200px;
+  margin: 1rem auto;
 }
 
 /**********/
@@ -267,8 +271,35 @@ button:active {
 
 /*********/
 /* ERROR */
-/******^^*/
+/*********/
 .wrapper-error,
 .error-carico {
   text-align: center;
+}
+
+/***********/
+/* SPINNER */
+/***********/
+.spinner-container {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem;
+  place-content: center;
+}
+.spinner {
+  border: 10px solid var(--sand);
+  border-top: 10px solid var(--blue);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  justify-self: center;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

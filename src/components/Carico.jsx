@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content"
+import { Spinner } from "./Spinner"
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs"
 import { FiDownload } from "react-icons/fi"
@@ -15,11 +15,12 @@ export const Carico = () => {
     mcInputCarico,
     setMcInputCarico,
     updateCassoneCarico,
+    isLoading,
   } = useContext(ContextData)
 
   return (
     <>
-      {cassone.cer ? (
+      {!isLoading || !cassone.cer ? (
         <div className="wrapper-carico" style={{ color: cassone.colore }}>
           <div className="title-carico">CARICO</div>
           <div className="cer-carico">CER {cassone.cer}</div>
@@ -47,7 +48,6 @@ export const Carico = () => {
             />
             <label htmlFor="mc"> mc</label>
           </div>
-
           <button
             className="btn-carico-carico"
             onClick={() => updateCassoneCarico(cassone.id)}
@@ -56,7 +56,7 @@ export const Carico = () => {
           </button>
         </div>
       ) : (
-        <Content />
+        <Spinner />
       )}
     </>
   )

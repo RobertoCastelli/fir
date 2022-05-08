@@ -14,10 +14,10 @@ import { ContextProvider } from "./context"
 
 function App() {
   return (
-    <ContextProvider>
-      <div className="container">
-        <div className="content">
-          <BrowserRouter>
+    <BrowserRouter>
+      <ContextProvider>
+        <div className="container">
+          <div className="content">
             <Title />
             <Routes>
               <Route path="*" element={<Error />} />
@@ -26,11 +26,11 @@ function App() {
               <Route path="/scarico" element={<Scarico />} />
               {/*     <Route path="/log" element={<Log />} />*/}
             </Routes>
-          </BrowserRouter>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </ContextProvider>
+      </ContextProvider>
+    </BrowserRouter>
   )
 }
 

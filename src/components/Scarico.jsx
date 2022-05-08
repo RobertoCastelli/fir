@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 // COMPONENTS
-import { Content } from "./Content"
+import { Spinner } from "./Spinner"
 import { ElencoCarichi } from "./ElencoCarichi"
 // ICONS
 import { BsMinecartLoaded } from "react-icons/bs"
@@ -9,13 +9,16 @@ import { FiUpload } from "react-icons/fi"
 import { ContextData } from "../context"
 
 export const Scarico = () => {
-  const { cassone, rifProgressivo, updateCassoneScarico } = useContext(
-    ContextData
-  )
+  const {
+    cassone,
+    rifProgressivo,
+    updateCassoneScarico,
+    isLoading,
+  } = useContext(ContextData)
 
   return (
     <>
-      {cassone.cer ? (
+      {!isLoading ? (
         <div className="wrapper-scarico" style={{ color: cassone.colore }}>
           <div className="title-scarico">SCARICO</div>
           <div className="cer-scarico">CER {cassone.cer}</div>
@@ -35,7 +38,7 @@ export const Scarico = () => {
           </button>
         </div>
       ) : (
-        <Content />
+        <Spinner />
       )}
     </>
   )
