@@ -16,7 +16,7 @@ import {
 export const ContextData = React.createContext()
 
 export const ContextProvider = (props) => {
-  //--- STATES
+  //--- STATES VARIABLES
   const [cassoni, setCassoni] = useState([])
   const [cassone, setCassone] = useState([])
   const [mcInputCarico, setMcInputCarico] = useState(0)
@@ -28,14 +28,15 @@ export const ContextProvider = (props) => {
   const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
   const collRefFir = collection(db, "fir")
 
+  //--- NAVIGATE VARIABLE
+  const navigate = useNavigate()
+
   //--- GET DATE && YEAR
   const today = new Date().toLocaleDateString().slice(0, 4)
   const year = new Date()
     .getFullYear()
     .toString()
     .slice(-2)
-
-  const navigate = useNavigate()
 
   /***********************/
   /***********************/
@@ -54,20 +55,24 @@ export const ContextProvider = (props) => {
   }
 
   //--- SHOW TUTTI I CASSONI
-  onSnapshot(collRefFir, (snapshot) => {
-    let cassoneList = []
-    snapshot.docs.forEach((doc) => {
-      cassoneList.push({
-        ...doc.data(),
-        id: doc.id,
-        mcTotali: sommaCarichiNelCassone(doc.id),
+  useEffect(() => {
+    onSnapshot(collRefFir, (snapshot) => {
+      let cassoneList = []
+      snapshot.docs.forEach((doc) => {
+        cassoneList.push({
+          ...doc.data(),
+          id: doc.id,
+          mcTotali: sommaCarichiNelCassone(doc.id),
+        })
+        setCassoni(cassoneList)
       })
-      setCassoni(cassoneList)
     })
-  })
+    return () => console.log("page loaded...")
+  }, [rifProgressivo])
 
   //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
+    // spinner on
     setIsLoading(true)
     const cassoneSnapshot = await getDoc(doc(db, "fir", id))
     if (cassoneSnapshot.exists()) {
@@ -76,6 +81,7 @@ export const ContextProvider = (props) => {
         id: id,
         mcTotali: sommaCarichiNelCassone(id),
       })
+      // spinner off
       setIsLoading(false)
     } else {
       console.log("Cassone non presente nel database")
@@ -99,6 +105,7 @@ export const ContextProvider = (props) => {
 
   //--- UPDATE DATI CASSONE SELEZIONATO {rif, mc, stato}
   const updateRifMcStateCassone = async (id) => {
+    // spinner on
     setIsLoading(true)
     const cassoneRef = doc(db, "fir", id)
     await updateDoc(cassoneRef, {
@@ -107,6 +114,7 @@ export const ContextProvider = (props) => {
         { rif: rifProgressivo, mc: mcInputCarico, stato: false },
       ],
     })
+    // spinner off
     setIsLoading(false)
   }
 
@@ -114,6 +122,7 @@ export const ContextProvider = (props) => {
   //2.--- UPDATE NUMERO PROGRESSIVO
   //3.--- RESET MC INPUT
   //4.---TODO: UPDATE LOG
+  //5.--- NAVIGATE HOME & REFRESH PAGE
 
   const updateCassoneCarico = (id) => {
     if (
@@ -125,10 +134,7 @@ export const ContextProvider = (props) => {
       updateRifMcStateCassone(id)
       updateNumeroProgressivo()
       setMcInputCarico(0)
-      setTimeout(() => {
-        navigate("/")
-        window.location.reload(false)
-      }, 1000)
+      navigate("/")
     } else {
       alert("Carico annullato")
     }
@@ -179,10 +185,7 @@ export const ContextProvider = (props) => {
     if (window.confirm(`Premi OK per confermare lo scarico`)) {
       updateCheckeState(id)
       updateNumeroProgressivo()
-      setTimeout(() => {
-        navigate("/")
-        window.location.reload(false)
-      }, 1000)
+      navigate("/")
     } else {
       alert("Scarico annullato")
     }
