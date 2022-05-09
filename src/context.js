@@ -12,6 +12,9 @@ import {
   increment,
   onSnapshot,
   addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
 } from "firebase/firestore"
 
 //--- CONTEXT
@@ -73,7 +76,8 @@ export const ContextProvider = (props) => {
 
   //--- SHOW LOGS
   const getLogs = async () => {
-    const logsSnapshot = await getDocs(collRefLogs)
+    const q = query(collection(db, "logs"), orderBy("timestamp"))
+    const logsSnapshot = await getDocs(q)
     const logsList = logsSnapshot.docs.map((doc) => doc.data())
     setLogs(logsList)
   }
@@ -81,11 +85,24 @@ export const ContextProvider = (props) => {
   //--- ADD LOG CARICO
   const addLogCarico = async () => {
     await addDoc(collRefLogs, {
+      timestamp: serverTimestamp(),
       createdAt: today,
       cer: cassone.cer,
       rif: rifProgressivo,
       mc: mcInputCarico,
-      stato: "C",
+      stato: "caricato",
+    })
+  }
+
+  //--- ADD LOG SCARICO
+  const addLogScarico = async () => {
+    await addDoc(collRefLogs, {
+      timestamp: serverTimestamp(),
+      createdAt: today,
+      cer: cassone.cer,
+      rif: rifProgressivo,
+      stato: "scaricato",
+      scarico: cassone.carico.filter((item) => item.stato === true),
     })
   }
 
@@ -108,7 +125,7 @@ export const ContextProvider = (props) => {
         setCassoni(cassoneList)
       })
     })
-  }, [cassoni])
+  }, [rifProgressivo])
 
   //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
@@ -163,7 +180,7 @@ export const ContextProvider = (props) => {
     if (
       mcInputCarico !== 0 &&
       window.confirm(
-        `Premi OK per confermare carico ${mcInputCarico} mc, rif. ${rifProgressivo}`
+        `Premi OK per confermare carico ${mcInputCarico} mc ➞ rif. ${rifProgressivo}`
       )
     ) {
       //1.--- UPDATE CASSONE SELEZIONATO
@@ -221,12 +238,16 @@ export const ContextProvider = (props) => {
 
   //--- FASI DI SCARICO
   const updateCassoneScarico = async (id) => {
-    if (window.confirm(`Premi OK per confermare lo scarico`)) {
+    if (
+      cassone.carico.length !== 0 &&
+      window.confirm(`Premi OK per confermare lo scarico`)
+    ) {
       //1.--- UPDATE SCARICO NEL CASSONE
       updateCheckeState(id)
       //2.--- UPDATE NUMERO PROGRESSIVO
       updateNumeroProgressivo()
-      //3.---TODO: UPDATE LOG
+      //3.---UPDATE LOG SCARICO
+      addLogScarico()
       //4.--- NAVIGATE TO HOMEPAGE
       navigate("/")
     } else {

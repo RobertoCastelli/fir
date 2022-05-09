@@ -5,7 +5,7 @@ import { Content } from "./Content"
 import { ContextData } from "../context"
 
 export const Logs = () => {
-  const { logs } = useContext(ContextData)
+  const { logs, year } = useContext(ContextData)
 
   return (
     <>
@@ -13,12 +13,27 @@ export const Logs = () => {
         <div className="wrapper-log">
           <ul className="ul-log">
             {logs.map((log, i) => {
-              return (
+              return log.stato === "caricato" ? (
                 <li key={i} className="li-log">
-                  <div className="li-rif">{log.rif}</div>
+                  <div className="li-rif-carico">rif.{log.rif}</div>
                   <div className="li-details">
-                    {log.mc}
-                    {log.stato}
+                    {log.createdAt}
+                    {year} - {log.cer} ➞ {log.mc}mc
+                  </div>
+                </li>
+              ) : (
+                <li key={i} className="li-log">
+                  <div className="li-rif-scarico">rif.{log.rif}</div>
+                  <div className="li-details">
+                    {log.createdAt}
+                    {year} - {log.cer}{" "}
+                    {log.scarico.map((item, i) => {
+                      return (
+                        <div key={i}>
+                          rif. {item.rif} ➞ {item.mc}mc
+                        </div>
+                      )
+                    })}
                   </div>
                 </li>
               )
