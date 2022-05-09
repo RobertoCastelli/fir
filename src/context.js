@@ -6,16 +6,23 @@ import { db } from "./firebase"
 import {
   doc,
   getDoc,
+  getDocs,
   updateDoc,
   collection,
   increment,
   onSnapshot,
+  addDoc,
 } from "firebase/firestore"
 
 //--- CONTEXT
 export const ContextData = React.createContext()
 
 export const ContextProvider = (props) => {
+  /*   
+  \ \ / / _` | '__/ __|
+   \ V / (_| | |  \__ \
+    \_/ \__,_|_|  |___/ */
+
   //--- STATES VARIABLES
   const [cassoni, setCassoni] = useState([])
   const [cassone, setCassone] = useState([])
@@ -23,26 +30,29 @@ export const ContextProvider = (props) => {
   const [rifProgressivo, setRifProgressivo] = useState(0)
   const [checkedStateCarico, setCheckedStateCarico] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [logs, setLogs] = useState([])
 
   //--- FIREBASE VARIABLES
   const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI")
+  const collRefLogs = collection(db, "logs")
   const collRefFir = collection(db, "fir")
 
   //--- NAVIGATE VARIABLE
   const navigate = useNavigate()
 
-  //--- GET DATE && YEAR
+  //--- GET DATE && YEAR VARIABLES
   const today = new Date().toLocaleDateString().slice(0, 4)
   const year = new Date()
     .getFullYear()
     .toString()
     .slice(-2)
 
-  /***********************/
-  /***********************/
-  /** START FASE CARICO **/
-  /***********************/
-  /***********************/
+  /*
+   _ __  _   _ _ __ ___    _ __  _ __ ___   __ _ 
+  | '_ \| | | | '_ ` _ \  | '_ \| '__/ _ \ / _` |
+  | | | | |_| | | | | | | | |_) | | | (_) | (_| |
+  |_| |_|\__,_|_| |_| |_| | .__/|_|  \___/ \__, |
+                          |_|              |___/   */
 
   //--- SHOW NUMERO PROGRESSIVO
   onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog))
@@ -53,6 +63,37 @@ export const ContextProvider = (props) => {
       prog: increment(1),
     })
   }
+
+  /*                  
+  | | ___   __ _ ___ 
+  | |/ _ \ / _` / __|
+  | | (_) | (_| \__ \
+  |_|\___/ \__, |___/
+          |___/      */
+
+  //--- SHOW LOGS
+  const getLogs = async () => {
+    const logsSnapshot = await getDocs(collRefLogs)
+    const logsList = logsSnapshot.docs.map((doc) => doc.data())
+    setLogs(logsList)
+  }
+
+  //--- ADD LOG CARICO
+  const addLogCarico = async () => {
+    await addDoc(collRefLogs, {
+      createdAt: today,
+      cer: cassone.cer,
+      rif: rifProgressivo,
+      mc: mcInputCarico,
+      stato: "C",
+    })
+  }
+
+  /*                           
+   ___ __ _ _ __(_) ___ ___  
+  / __/ _` | '__| |/ __/ _ \ 
+ | (_| (_| | |  | | (_| (_) |
+  \___\__,_|_|  |_|\___\___/   */
 
   //--- SHOW TUTTI I CASSONI
   useEffect(() => {
@@ -67,8 +108,7 @@ export const ContextProvider = (props) => {
         setCassoni(cassoneList)
       })
     })
-    return () => console.log("page loaded...")
-  }, [rifProgressivo])
+  }, [cassoni])
 
   //--- SHOW CASSONE SELEZIONATO
   const getCassoneSelezionato = async (id) => {
@@ -118,12 +158,7 @@ export const ContextProvider = (props) => {
     setIsLoading(false)
   }
 
-  //1.--- UPDATE CASSONE SELEZIONATO
-  //2.--- UPDATE NUMERO PROGRESSIVO
-  //3.--- RESET MC INPUT
-  //4.---TODO: UPDATE LOG
-  //5.--- NAVIGATE HOME & REFRESH PAGE
-
+  //--- FASI DI CARICO
   const updateCassoneCarico = (id) => {
     if (
       mcInputCarico !== 0 &&
@@ -131,24 +166,26 @@ export const ContextProvider = (props) => {
         `Premi OK per confermare carico ${mcInputCarico} mc, rif. ${rifProgressivo}`
       )
     ) {
+      //1.--- UPDATE CASSONE SELEZIONATO
       updateRifMcStateCassone(id)
+      //2.--- UPDATE NUMERO PROGRESSIVO
       updateNumeroProgressivo()
+      //3.--- RESET MC INPUT
       setMcInputCarico(0)
+      //4.--- UPDATE LOG CARICO
+      addLogCarico()
+      //5.--- NAVIGATE TO HOMEPAGE
       navigate("/")
     } else {
       alert("Carico annullato")
     }
   }
 
-  //^^^^^^^^^^^^^^^^^//
-  // END FASE CARICO //
-  //_________________//
-
-  /************************/
-  /************************/
-  /** START FASE SCARICO **/
-  /************************/
-  /************************/
+  /*
+   ___  ___ __ _ _ __(_) ___ ___  
+  / __|/ __/ _` | '__| |/ __/ _ \ 
+  \__ \ (_| (_| | |  | | (_| (_) |
+  |___/\___\__,_|_|  |_|\___\___/  */
 
   //--- GET NUMERO CARICHI (stato false) IN UN CASSONE COPIA
   useEffect(() => {
@@ -165,35 +202,37 @@ export const ContextProvider = (props) => {
 
   //--- SOSTITUISCI CARICO ORIGINALI CON COPIA CASSONE
   const updateCheckeState = async (id) => {
+    // spinner on
     setIsLoading(true)
+    // cambia stato true/false cassone originale
     checkedStateCarico.map((item, i) =>
       item === true ? (cassone.carico[i].stato = true) : item
     )
+    // filtra i carichi non scaricati
     let cassoneScaricato = cassone.carico.filter((item) => item.stato === false)
+    // aggiorna cassone con i carichi rimanenti
     const cassoneRef = doc(db, "fir", id)
     await updateDoc(cassoneRef, {
       carico: cassoneScaricato,
     })
+    // spinner off
     setIsLoading(false)
   }
 
-  //1.--- UPDATE SCARICO NEL CASSONE
-  //2.--- UPDATE NUMERO PROGRESSIVO
-  //3.---TODO: UPDATE LOG
-
+  //--- FASI DI SCARICO
   const updateCassoneScarico = async (id) => {
     if (window.confirm(`Premi OK per confermare lo scarico`)) {
+      //1.--- UPDATE SCARICO NEL CASSONE
       updateCheckeState(id)
+      //2.--- UPDATE NUMERO PROGRESSIVO
       updateNumeroProgressivo()
+      //3.---TODO: UPDATE LOG
+      //4.--- NAVIGATE TO HOMEPAGE
       navigate("/")
     } else {
       alert("Scarico annullato")
     }
   }
-
-  //^^^^^^^^^^^^^^^^^^//
-  // END FASE SCARICO //
-  //__________________//
 
   //--- RENDER
   return (
@@ -211,6 +250,8 @@ export const ContextProvider = (props) => {
         updateCassoneScarico,
         handleCheckbox,
         isLoading,
+        logs,
+        getLogs,
       }}
     >
       {props.children}

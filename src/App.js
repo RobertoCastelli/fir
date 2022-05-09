@@ -8,7 +8,7 @@ import { Title } from "./components/Title"
 import { Carico } from "./components/Carico"
 import { Error } from "./components/Error"
 import { Scarico } from "./components/Scarico"
-/* import { Log } from "./components/Log"; */
+import { Logs } from "./components/Logs"
 // CONTEXT
 import { ContextProvider } from "./context"
 
@@ -24,7 +24,7 @@ function App() {
               <Route path="/" element={<Content />} />
               <Route path="/carico" element={<Carico />} />
               <Route path="/scarico" element={<Scarico />} />
-              {/*     <Route path="/log" element={<Log />} />*/}
+              <Route path="/logs" element={<Logs />} />
             </Routes>
           </div>
           <Footer />
@@ -35,5 +35,3 @@ function App() {
 }
 
 export default App
-
-//TODO: conferma + spinner

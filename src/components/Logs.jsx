@@ -1,10 +1,10 @@
-/* import React, { useContext } from "react"
+import React, { useContext } from "react"
 // COMPONENTS
 import { Content } from "./Content"
 // CONTEXT
 import { ContextData } from "../context"
 
-export const Log = () => {
+export const Logs = () => {
   const { logs } = useContext(ContextData)
 
   return (
@@ -15,12 +15,10 @@ export const Log = () => {
             {logs.map((log, i) => {
               return (
                 <li key={i} className="li-log">
-                  <div className="li-rif">
-                    {log.rifProgressivo}/{log.year}
-                  </div>
+                  <div className="li-rif">{log.rif}</div>
                   <div className="li-details">
-                    {log.today} {log.stato} - CER {log.cer} ➟{" "}
-                    {log.mcInputCarico} mc
+                    {log.mc}
+                    {log.stato}
                   </div>
                 </li>
               )
@@ -33,4 +31,3 @@ export const Log = () => {
     </>
   )
 }
- */
