@@ -6,12 +6,12 @@ export const ElencoCarichi = () => {
   const { year, cassone, handleCheckbox } = useContext(ContextData)
   return (
     <>
-      {cassone.length !== 0 ? (
-        <div className="wrapper-filtered">
-          <ul className="ul-filtered">
+      {cassone.carico.length !== 0 ? (
+        <div className="wrapper-elenco">
+          <ul className="ul-elenco">
             {cassone.carico.map((elem, i) => {
               return (
-                <li key={i} className="li-filtered">
+                <li key={i} className="li-elenco">
                   <input
                     type="checkbox"
                     name="rifCarico"
@@ -26,7 +26,7 @@ export const ElencoCarichi = () => {
           </ul>
         </div>
       ) : (
-        <div>nessun carico presente</div>
+        <div className="nessun-carico-elenco">0 carichi</div>
       )}
     </>
   )

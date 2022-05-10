@@ -14,17 +14,17 @@ export const Logs = () => {
           <ul className="ul-log">
             {logs.map((log, i) => {
               return log.stato === "caricato" ? (
-                <li key={i} className="li-log">
-                  <div className="li-rif-carico">rif.{log.rif}</div>
-                  <div className="li-details">
+                <li key={i} className="li-container-log">
+                  <div className="li-rif-carico-log">rif.{log.rif}</div>
+                  <div className="li-details-log">
                     {log.createdAt}
                     {year} - {log.cer} ➞ {log.mc}mc
                   </div>
                 </li>
               ) : (
-                <li key={i} className="li-log">
-                  <div className="li-rif-scarico">rif.{log.rif}</div>
-                  <div className="li-details">
+                <li key={i} className="li-container-log">
+                  <div className="li-rif-scarico-log">rif.{log.rif}</div>
+                  <div className="li-details-log">
                     {log.createdAt}
                     {year} - {log.cer}{" "}
                     {log.scarico.map((item, i) => {
