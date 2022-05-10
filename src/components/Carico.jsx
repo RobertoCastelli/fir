@@ -25,7 +25,7 @@ export const Carico = () => {
       {(() => {
         if (cassone.length !== 0) {
           return (
-            <div className="wrapper-carico" style={{ color: cassone.colore }}>
+            <div className="wrapper-carico">
               <div className="background-carico">
                 <div
                   className="title-carico"

@@ -22,7 +22,7 @@ export const Scarico = () => {
       {(() => {
         if (cassone.length !== 0) {
           return (
-            <div className="wrapper-scarico" style={{ color: cassone.colore }}>
+            <div className="wrapper-scarico">
               <div className="background-scarico">
                 <div
                   className="title-scarico"
