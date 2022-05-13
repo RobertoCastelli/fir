@@ -5,7 +5,7 @@ import { Content } from "./Content";
 import { ContextData } from "../context";
 
 export const Logs = () => {
-  const { logs, year } = useContext(ContextData);
+  const { logs } = useContext(ContextData);
 
   return (
     <>
