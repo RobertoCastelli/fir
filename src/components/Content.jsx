@@ -1,54 +1,59 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 // ROUTER
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 // ICONS
-import { FaRecycle } from "react-icons/fa";
-import { FiDownload, FiUpload } from "react-icons/fi";
-import { BsMinecartLoaded } from "react-icons/bs";
+import { FaRecycle } from "react-icons/fa"
+import { FiDownload, FiUpload } from "react-icons/fi"
+import { BsMinecartLoaded } from "react-icons/bs"
 // CONTEXT
-import { ContextData } from "../context";
+import { ContextData } from "../context"
 
 export const Content = () => {
-  const { cersDb, showSelectedCer } = useContext(ContextData);
+  const { cassoni, getCassoneSelezionato } = useContext(ContextData)
 
   return (
     <div className="wrapper-content">
       <ul className="ul-content">
-        {cersDb.map((cer) => {
+        {cassoni.map((cassone) => {
           return (
-            <li
-              className="li-content"
-              key={cer.cer}
-              style={{ color: cer.colore }}
-            >
-              <div className="img-content">
-                <FaRecycle size={50} />
+            <li className="li-content" key={cassone.id}>
+              <div
+                className="background-content"
+                style={{ backgroundColor: cassone.colore }}
+              >
+                <div className="img-content">
+                  <FaRecycle size={50} />
+                </div>
               </div>
-              <div className="cer-content">CER {cer.cer}</div>
-              <div className="descrizione-content">{cer.descrizione}</div>
-              <div className="mc-content">
-                {cer.mcTotali} / 36 <BsMinecartLoaded />
+              <div className="text-content">
+                <div className="cer-content">CER {cassone.cer}</div>
+                <div className="descrizione-content">{cassone.descrizione}</div>
+                <div className="mc-content">
+                  {cassone.mcTotali} /36 <BsMinecartLoaded />
+                </div>
               </div>
-              <Link to="/carico">
-                <button
-                  className="btn-carico-content"
-                  onClick={() => showSelectedCer(cer.cer)}
-                >
-                  <FiDownload size={20} />
-                </button>
-              </Link>
-              <Link to="/scarico">
-                <button
-                  className="btn-scarico-content"
-                  onClick={() => showSelectedCer(cer.cer)}
-                >
-                  <FiUpload size={20} />
-                </button>
-              </Link>
+              <div className="btns-content">
+                <Link to="/carico">
+                  <button
+                    className="btn-carico-content"
+                    onClick={() => getCassoneSelezionato(cassone.id)}
+                  >
+                    <FiDownload size={20} />
+                  </button>
+                </Link>
+                <Link to="/scarico">
+                  <button
+                    className="btn-scarico-content"
+                    onClick={() => getCassoneSelezionato(cassone.id)}
+                  >
+                    <FiUpload size={20} />
+                  </button>
+                </Link>
+              </div>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
-};
+  )
+}

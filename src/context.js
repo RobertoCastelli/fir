@@ -1,199 +1,281 @@
-import React, { useState } from "react";
-// DATABASE
-import { cers } from "./variables/cers";
-// CONTEXT
+import React, { useState, useEffect } from "react";
+//--- NAVIGATE
+import { useNavigate } from "react-router-dom";
+//--- FIREBASE
+import { db } from "./firebase";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  collection,
+  increment,
+  onSnapshot,
+  addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+} from "firebase/firestore";
+
+//--- CONTEXT
 export const ContextData = React.createContext();
 
 export const ContextProvider = (props) => {
-  // STATE
-  const [cersDb, setCersDb] = useState(cers);
-  const [selectedCer, setSelectedCer] = useState([]);
+  /*   
+  \ \ / / _` | '__/ __|
+   \ V / (_| | |  \__ \
+    \_/ \__,_|_|  |___/ */
+
+  //--- STATES VARIABLES
+  const [cassoni, setCassoni] = useState([]);
+  const [cassone, setCassone] = useState([]);
   const [mcInputCarico, setMcInputCarico] = useState(0);
-  const [rifProgressivo, setRifProgressivo] = useState(1);
+  const [rifProgressivo, setRifProgressivo] = useState(0);
+  const [checkedStateCarico, setCheckedStateCarico] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [logs, setLogs] = useState([]);
-  const [filteredState, setFilteredState] = useState([]);
 
-  // GET DATE && YEAR
-  const today = new Date().toLocaleDateString().slice(0, 4);
-  const year = new Date().getFullYear().toString().slice(-2);
+  //--- FIREBASE VARIABLES
+  const docRefContatore = doc(db, "contatore", "KZHr4753xMnqTy0H3rBI");
+  const collRefLogs = collection(db, "logs");
+  const collRefFir = collection(db, "fir");
 
-  // INCREMENTA RIF. PROGRESSIVO CARICO/SCARICO
-  const incrementaRifProgressivo = () => setRifProgressivo(rifProgressivo + 1);
+  //--- NAVIGATE VARIABLE
+  const navigate = useNavigate();
 
-  // PRENDI CASSONE SELEZIONATO
-  const showSelectedCer = (cer) => {
-    setSelectedCer(cersDb.filter((c) => c.cer === cer));
-    return getFilteredStateCarico(cer);
-  };
+  //--- GET DATE && YEAR VARIABLES
+  const today = new Date().toLocaleDateString().slice(0, 9);
+  console.log(today);
+  const year = new Date()
+    .getFullYear()
+    .toString()
+    .slice(-2);
 
-  // SOMMA MC-TOTALI DEI CARICHI DEL CASSONE
-  const sommaCarichi = (cer) => {
-    let arr = [mcInputCarico];
-    cersDb.map((c) => {
-      if (c.cer === cer) {
-        return c.carico.forEach((e) => e.stato === false && arr.push(e.mc));
-      } else {
-        return c;
-      }
+  /*
+   _ __  _   _ _ __ ___    _ __  _ __ ___   __ _ 
+  | '_ \| | | | '_ ` _ \  | '_ \| '__/ _ \ / _` |
+  | | | | |_| | | | | | | | |_) | | | (_) | (_| |
+  |_| |_|\__,_|_| |_| |_| | .__/|_|  \___/ \__, |
+                          |_|              |___/   */
+
+  //--- SHOW NUMERO PROGRESSIVO
+  onSnapshot(docRefContatore, (doc) => setRifProgressivo(doc.data().prog));
+
+  //--- UPDATE NUMERO PROGRESSIVO + 1
+  const updateNumeroProgressivo = async () => {
+    await updateDoc(docRefContatore, {
+      prog: increment(1),
     });
-    return arr.reduce((a, b) => parseInt(a) + parseInt(b), 0);
   };
 
-  // AGGIORNA MC-TOTALI NEL CASSONE SELEZIONATO
-  const updateMcTotaliSelectedCer = (cer) =>
-    setSelectedCer([{ ...selectedCer[0], mcTotali: sommaCarichi(cer) }]);
+  /*                  
+  | | ___   __ _ ___ 
+  | |/ _ \ / _` / __|
+  | | (_) | (_| \__ \
+  |_|\___/ \__, |___/
+          |___/      */
 
-  /***********************/
-  /***********************/
-  /** START FASE CARICO **/
-  /***********************/
-  /***********************/
+  //--- SHOW LOGS
+  const getLogs = async () => {
+    const q = query(collection(db, "logs"), orderBy("timestamp", "desc"));
+    const logsSnapshot = await getDocs(q);
+    const logsList = logsSnapshot.docs.map((doc) => doc.data());
+    setLogs(logsList);
+  };
 
-  // AGGIORNA CARICO ==> MC, MC-TOTALI, RIF. PROGRESSIVO E STATO NEI CASSONI
-  const updateDataSelectedCerCarico = (cer) => {
-    setCersDb(
-      cersDb.map((c) => {
-        if (c.cer === cer) {
-          return {
-            ...c,
-            mcTotali: sommaCarichi(cer),
-            carico: [
-              ...c.carico,
-              {
-                rif: rifProgressivo,
-                mc: mcInputCarico,
-                stato: false,
-              },
-            ],
-          };
+  //--- ADD LOG CARICO
+  const addLogCarico = async () => {
+    await addDoc(collRefLogs, {
+      timestamp: serverTimestamp(),
+      createdAt: today,
+      cer: cassone.cer,
+      rif: rifProgressivo,
+      mc: mcInputCarico,
+      stato: "caricato",
+    });
+  };
+
+  //--- ADD LOG SCARICO
+  const addLogScarico = async () => {
+    await addDoc(collRefLogs, {
+      timestamp: serverTimestamp(),
+      createdAt: today,
+      cer: cassone.cer,
+      rif: rifProgressivo,
+      stato: "scaricato",
+      scarico: cassone.carico.filter((item) => item.stato === true),
+    });
+  };
+
+  /*                           
+   ___ __ _ _ __(_) ___ ___  
+  / __/ _` | '__| |/ __/ _ \ 
+ | (_| (_| | |  | | (_| (_) |
+  \___\__,_|_|  |_|\___\___/   */
+
+  //--- SHOW TUTTI I CASSONI
+  useEffect(() => {
+    onSnapshot(collRefFir, (snapshot) => {
+      let cassoneList = [];
+      snapshot.docs.forEach((doc) => {
+        cassoneList.push({
+          ...doc.data(),
+          id: doc.id,
+          mcTotali: sommaCarichiNelCassone(doc.id),
+        });
+        setCassoni(cassoneList);
+      });
+    });
+  }, [rifProgressivo]);
+
+  //--- SHOW CASSONE SELEZIONATO
+  const getCassoneSelezionato = async (id) => {
+    // spinner on
+    setIsLoading(true);
+    const cassoneSnapshot = await getDoc(doc(db, "fir", id));
+    if (cassoneSnapshot.exists()) {
+      setCassone({
+        ...cassoneSnapshot.data(),
+        id: id,
+        mcTotali: sommaCarichiNelCassone(id),
+      });
+      // spinner off
+      setIsLoading(false);
+    } else {
+      console.log("Cassone non presente nel database");
+    }
+  };
+
+  //--- SOMMA CARICHI NEL CASSONE
+  const sommaCarichiNelCassone = (id) => {
+    let contenitoreCarichi = [];
+    cassoni.map((cassone) => {
+      return cassone.carico.forEach((carico) => {
+        if (cassone.id === id) {
+          contenitoreCarichi.push(carico.mc);
         } else {
-          return c;
+          return cassone;
         }
-      })
-    );
+      });
+    });
+    return contenitoreCarichi.reduce((a, b) => a + b, 0);
   };
 
-  // AGGIORNA LOG CARICO
-  const updateLogCarico = (cer) => {
-    setLogs([
-      ...logs,
-      {
-        today,
-        cer,
-        year,
-        rifProgressivo,
-        mcInputCarico,
-      },
-    ]);
+  //--- UPDATE DATI CASSONE SELEZIONATO {rif, mc, stato}
+  const updateRifMcStateCassone = async (id) => {
+    // spinner on
+    setIsLoading(true);
+    const cassoneRef = doc(db, "fir", id);
+    await updateDoc(cassoneRef, {
+      carico: [
+        ...cassone.carico,
+        { rif: rifProgressivo, mc: mcInputCarico, stato: false },
+      ],
+    });
+    // spinner off
+    setIsLoading(false);
   };
 
-  // AGGIORNA TUTTI I DATI DEL CARICO
-  const updateCersCarico = (cer) => {
+  //--- FASI DI CARICO
+  const updateCassoneCarico = (id) => {
     if (
       mcInputCarico !== 0 &&
       window.confirm(
-        `⚠️ CARICO CER ${selectedCer[0].cer} - rif.${rifProgressivo}/${year} ➟ ${mcInputCarico} mc?`
+        `Premi OK per confermare carico ${mcInputCarico} mc ➞ rif. ${rifProgressivo}`
       )
     ) {
-      updateDataSelectedCerCarico(cer);
-      updateMcTotaliSelectedCer(cer);
-      updateLogCarico(cer);
-      incrementaRifProgressivo();
+      //1.--- UPDATE CASSONE SELEZIONATO
+      updateRifMcStateCassone(id);
+      //2.--- UPDATE NUMERO PROGRESSIVO
+      updateNumeroProgressivo();
+      //3.--- RESET MC INPUT
       setMcInputCarico(0);
+      //4.--- UPDATE LOG CARICO
+      addLogCarico();
+      //5.--- NAVIGATE TO HOMEPAGE
+      navigate("/");
     } else {
-      alert("❌ Carico annullato!");
+      alert("Carico annullato");
     }
   };
-  console.log(filteredState, cersDb, "dopo carico");
-  /*^^^^^^^^^^^^^^^^^^^*/
-  /** END FASE CARICO **/
-  /*___________________*/
 
-  /************************/
-  /************************/
-  /** START FASE SCARICO **/
-  /************************/
-  /************************/
+  /*
+   ___  ___ __ _ _ __(_) ___ ___  
+  / __|/ __/ _` | '__| |/ __/ _ \ 
+  \__ \ (_| (_| | |  | | (_| (_) |
+  |___/\___\__,_|_|  |_|\___\___/  */
 
-  // GET ARRAY CARICHI NON ANCORA SCARICATI
-  const getFilteredStateCarico = (cer) => {
-    cersDb.map(
-      (c) =>
-        c.cer === cer &&
-        setFilteredState(c.carico.filter((elem) => elem.stato === false))
+  //--- GET NUMERO CARICHI (stato false) IN UN CASSONE COPIA
+  useEffect(() => {
+    Array.isArray(cassone.carico) &&
+      setCheckedStateCarico(new Array(cassone.carico.length).fill(false));
+  }, [cassone]);
+
+  //--- TOGGLE CARICHI (stato true/false) NEL CASSONE COPIA
+  const handleCheckbox = (position) => {
+    setCheckedStateCarico(
+      checkedStateCarico.map((item, i) => (position === i ? !item : item))
     );
   };
 
-  // CHECKBOX ==> CAMBIA STATO CARICO/SCARICO
-  const handleChange = (index) => {
-    selectedCer.map((elem) =>
-      elem.carico.forEach((e, i) => {
-        if (i === index) {
-          return (e.stato = !e.stato);
-        } else {
-          return e.stato;
-        }
-      })
+  //--- SOSTITUISCI CARICO ORIGINALI CON COPIA CASSONE
+  const updateCheckeState = async (id) => {
+    // spinner on
+    setIsLoading(true);
+    // cambia stato true/false cassone originale
+    checkedStateCarico.map((item, i) =>
+      item === true ? (cassone.carico[i].stato = true) : item
     );
-  };
-
-  // AGGIORNA SCARICO ==> MC-TOTALI
-  const updateDataSelectedCerScarico = (cer) => {
-    setCersDb(
-      cersDb.map((c) => {
-        if (c.cer === cer) {
-          return {
-            ...c,
-            mcTotali: sommaCarichi(cer),
-          };
-        } else {
-          return c;
-        }
-      })
+    // filtra i carichi non scaricati
+    let cassoneScaricato = cassone.carico.filter(
+      (item) => item.stato === false
     );
+    // aggiorna cassone con i carichi rimanenti
+    const cassoneRef = doc(db, "fir", id);
+    await updateDoc(cassoneRef, {
+      carico: cassoneScaricato,
+    });
+    // spinner off
+    setIsLoading(false);
   };
 
-  // AGGIORNA LOG SCARICO
-  const updateLogScarico = (cer) => {
-    setLogs([
-      ...logs,
-      {
-        today,
-        cer,
-        year,
-        rifProgressivo,
-      },
-    ]);
+  //--- FASI DI SCARICO
+  const updateCassoneScarico = async (id) => {
+    if (
+      cassone.carico.length !== 0 &&
+      window.confirm(`Premi OK per confermare lo scarico`)
+    ) {
+      //1.--- UPDATE SCARICO NEL CASSONE
+      updateCheckeState(id);
+      //2.--- UPDATE NUMERO PROGRESSIVO
+      updateNumeroProgressivo();
+      //3.---UPDATE LOG SCARICO
+      addLogScarico();
+      //4.--- NAVIGATE TO HOMEPAGE
+      navigate("/");
+    } else {
+      alert("Scarico annullato");
+    }
   };
 
-  // AGGIORNA TUTTI I DATI DELLO SCARICO
-  const updateCersScarico = (cer) => {
-    updateDataSelectedCerScarico(cer);
-    updateMcTotaliSelectedCer(cer);
-    updateLogScarico(cer);
-    incrementaRifProgressivo();
-    console.log(filteredState, cersDb, "dopo scarico");
-  };
-  /*^^^^^^^^^^^^^^^^^^^^*/
-  /** END FASE SCARICO **/
-  /*____________________*/
-
+  //--- RENDER
   return (
     <ContextData.Provider
       value={{
         today,
         year,
-        cersDb,
-        selectedCer,
-        showSelectedCer,
+        cassone,
+        cassoni,
         mcInputCarico,
-        setMcInputCarico,
         rifProgressivo,
-        updateCersCarico,
+        getCassoneSelezionato,
+        setMcInputCarico,
+        updateCassoneCarico,
+        updateCassoneScarico,
+        handleCheckbox,
+        isLoading,
         logs,
-        filteredState,
-        handleChange,
-        updateCersScarico,
+        getLogs,
       }}
     >
       {props.children}
